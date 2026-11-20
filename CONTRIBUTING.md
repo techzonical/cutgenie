@@ -1,4 +1,4 @@
-# Contributing to Cutzonical
+# Contributing to Cutgenie
 
 Thanks for helping! A few simple rules keep the project easy to work on.
 
@@ -23,11 +23,11 @@ editing logic. If you fix a bug that only showed up on real footage, add a check
 - Swift, following the style already in the file you're editing. Short comments that explain *why*, written in plain
   language for people who aren't video engineers.
 - Every edit goes through `Editor.handle` (see docs/ARCHITECTURE.md), so it works the same from the mouse and from
-  `cutzonicalctl`. New features should get a control command too.
+  `cutgeniectl`. New features should get a control command too.
 - Never write to the user's media files; projects are saved atomically and old versions are kept.
-- No new dependencies without discussion; Cutzonical uses only Apple frameworks.
+- No new dependencies without discussion; Cutgenie uses only Apple frameworks.
 
 ## Reporting bugs
 
 Include your macOS version, Mac model, what you did, what you expected, and the relevant part of
-`~/Library/Logs/Cutzonical/cutzonical.log`. A small project file that shows the problem helps a lot (remove anything private).
+`~/Library/Logs/Cutgenie/cutgenie.log`. A small project file that shows the problem helps a lot (remove anything private).

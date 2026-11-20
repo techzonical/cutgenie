@@ -11,4 +11,4 @@
 - Project management: project browser, versions, relink and collect media, autosave and crash recovery.
 - Export presets including constant-quality "Smart size" HEVC; background export.
 - Final Cut Pro XML import.
-- Local control interface (`cutzonicalctl`) with about 150 commands.
+- Local control interface (`cutgeniectl`) with about 150 commands.

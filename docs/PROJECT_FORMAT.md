@@ -1,6 +1,6 @@
 # Project file format
 
-A project is one JSON file, `<name>.cutzonical.json` (files named `.cutline.json`, from before the rename, open too).
+A project is one JSON file, `<name>.cutgenie.json` (files named `.cutline.json`, from before the rename, open too).
 Times are in seconds. Unknown keys are ignored, and optional keys are left out when unused, so files stay small and diffable.
 
 ```jsonc
@@ -25,4 +25,4 @@ Keyframes are `{ "t": seconds-from-the-clip-start, "v": [values], "e": "easing" 
 (default, left out), `in`, `out`, `s`, `strong`, `back`, `bounce` or `bez:x1,y1,x2,y2`. The easing is for the move
 *into* that keyframe.
 
-See `Sources/CutzonicalCore/Model.swift` and `Overlay.swift` for every field.
+See `Sources/CutgenieCore/Model.swift` and `Overlay.swift` for every field.

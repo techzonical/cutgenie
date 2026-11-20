@@ -1,4 +1,4 @@
-// Draws the Cutzonical app icon (timeline clips, a cut, two sparks) into an .iconset, then iconutil makes AppIcon.icns.
+// Draws the Cutgenie app icon (timeline clips, a cut, two sparks) into an .iconset, then iconutil makes AppIcon.icns.
 import AppKit
 // ICON_STYLE=amber (default: amber tile, dark clips) | dark (dark tile, amber clips)
 let style = ProcessInfo.processInfo.environment["ICON_STYLE"] ?? "amber"
@@ -20,7 +20,7 @@ func draw(_ px: Int) -> Data {
         : [NSColor(red: 0.16, green: 0.13, blue: 0.10, alpha: 1).cgColor, NSColor(red: 0.07, green: 0.06, blue: 0.045, alpha: 1).cgColor]) as CFArray, locations: [0, 1])!
     ctx.drawLinearGradient(g, start: CGPoint(x: m, y: m), end: CGPoint(x: m + t, y: m + t), options: [])
     ctx.restoreGState()
-    // Cutzonical: three timeline clips, a cut through them, and two sparks (AI) beside the cut. 110-unit grid inside the tile.
+    // Cutgenie: three timeline clips, a cut through them, and two sparks (AI) beside the cut. 110-unit grid inside the tile.
     func P(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: m + x / 110 * t, y: m + y / 110 * t) }
     func U(_ v: CGFloat) -> CGFloat { v / 110 * t }
     let dark = style == "dark"

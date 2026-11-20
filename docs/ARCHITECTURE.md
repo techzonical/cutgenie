@@ -1,14 +1,14 @@
 # Architecture
 
-Cutzonical is one Swift package with three targets.
+Cutgenie is one Swift package with three targets.
 
 | Target | What it is |
 |---|---|
-| `CutzonicalCore` | The engine. Project model, every editing command, undo, rendering, colour, sound, export, safety (autosave, versions, recovery). No SwiftUI. |
-| `Cutzonical` | The macOS app: windows, timeline, viewer, inspectors, menus. It calls into `Editor` for every change. |
-| `cutzonicalctl` | A tiny command-line client for the control server. |
+| `CutgenieCore` | The engine. Project model, every editing command, undo, rendering, colour, sound, export, safety (autosave, versions, recovery). No SwiftUI. |
+| `Cutgenie` | The macOS app: windows, timeline, viewer, inspectors, menus. It calls into `Editor` for every change. |
+| `cutgeniectl` | A tiny command-line client for the control server. |
 
-## The editor (`CutzonicalCore/Editor.swift`)
+## The editor (`CutgenieCore/Editor.swift`)
 
 `Editor` is an `ObservableObject` that owns the open `Project`, the AVFoundation player and the undo stack.
 **Every change goes through `Editor.handle(_ command: [String: Any])`**, whether it comes from a menu, a drag in the
@@ -39,11 +39,11 @@ Clip volume and keyframes are mix parameters.
 ## Safety (`Safety.swift`)
 
 - Saves are atomic; the file being replaced is kept as one of the last 10 versions in
-  `~/Library/Application Support/Cutzonical/Versions`.
-- Unsaved work is written every minute (and on quit) to `.../Cutzonical/Recovery` and offered back on the next open.
-- Problems go to `~/Library/Logs/Cutzonical/cutzonical.log`.
+  `~/Library/Application Support/Cutgenie/Versions`.
+- Unsaved work is written every minute (and on quit) to `.../Cutgenie/Recovery` and offered back on the next open.
+- Problems go to `~/Library/Logs/Cutgenie/cutgenie.log`.
 
 ## Control server (`ControlServer.swift`)
 
-A minimal HTTP server on `127.0.0.1` (port 7878, or `CUTZONICAL_PORT`) that accepts `POST /command` with a JSON body
+A minimal HTTP server on `127.0.0.1` (port 7878, or `CUTGENIE_PORT`) that accepts `POST /command` with a JSON body
 like `{"cmd": "split", "at": 12.5}` and returns `Editor.handle`'s result as JSON. It only listens on the local machine.

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Cutzonical check suite: run before installing a new build.
+"""Cutgenie check suite: run before installing a new build.
 
 Builds small test projects from real footage (read only - media and the user's projects are never changed),
-starts a separate Cutzonical on port 7879, and checks the bugs we have already fixed once:
+starts a separate Cutgenie on port 7879, and checks the bugs we have already fixed once:
   rotation      iPhone clip with a turn flag shows upright and fills the frame
   frame timing  export around cuts has evenly spaced frames (no blink)
   sound         sound keeps going across a 44.1 kHz mono -> 48 kHz stereo file switch
@@ -10,22 +10,22 @@ starts a separate Cutzonical on port 7879, and checks the bugs we have already f
   transform     V1 keyframed scale / position renders (picture shrinks over time)
   zoom          V1 zoom keyframes render
   autosave      unsaved changes are found again after a crash
-Usage:  python3 tests/check_all.py [path/to/Cutzonical binary]      (default: .build/release/Cutzonical)
+Usage:  python3 tests/check_all.py [path/to/Cutgenie binary]      (default: .build/release/Cutgenie)
 """
 import json, os, subprocess, sys, time, signal, shutil, tempfile, struct
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BIN = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, ".build/release/Cutzonical")
-CTL = os.path.join(ROOT, "build/cutzonicalctl")
+BIN = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, ".build/release/Cutgenie")
+CTL = os.path.join(ROOT, "build/cutgeniectl")
 # a folder with your own test footage (read only), see docs/TESTING.md:
 #   IMG_1640.MOV (iPhone HEVC, turned), a-roll-audio.wav (separate voice, 44.1 kHz mono), "Final MyPCKey sponsor message video.mov" (48 kHz stereo)
-SRC = os.environ.get("CUTZONICAL_FOOTAGE", "")
-BIG = os.environ.get("CUTZONICAL_BIG_PROJECT", "")     # optional: a long real project for the speed check
+SRC = os.environ.get("CUTGENIE_FOOTAGE", "")
+BIG = os.environ.get("CUTGENIE_BIG_PROJECT", "")     # optional: a long real project for the speed check
 PORT = "7879"
-OUT = tempfile.mkdtemp(prefix="cutzonical-check-")
+OUT = tempfile.mkdtemp(prefix="cutgenie-check-")
 PROJ = OUT            # scratch test projects live in a temporary folder, never in the repository
-TIMING = os.path.join(tempfile.gettempdir(), "cutzonical-check-timing.txt")
-env = dict(os.environ, CUTZONICAL_PORT=PORT, CUTZONICAL_AWAKE="1", CUTZONICAL_TIMING=TIMING)
+TIMING = os.path.join(tempfile.gettempdir(), "cutgenie-check-timing.txt")
+env = dict(os.environ, CUTGENIE_PORT=PORT, CUTGENIE_AWAKE="1", CUTGENIE_TIMING=TIMING)
 results = []
 
 
@@ -51,7 +51,7 @@ def start():
         if port_pid():
             return
         time.sleep(0.5)
-    raise SystemExit("Cutzonical did not start")
+    raise SystemExit("Cutgenie did not start")
 
 
 def stop(hard=False):
@@ -95,7 +95,7 @@ def project(name, clips, extra=None):
          "settings": {"width": 1920, "height": 1080, "fps": 30, "colorSpace": "rec709"}}
     if extra:
         d.update(extra)
-    p = os.path.join(PROJ, f"_check_{name}.cutzonical.json")
+    p = os.path.join(PROJ, f"_check_{name}.cutgenie.json")
     json.dump(d, open(p, "w"))
     return p
 
@@ -109,7 +109,7 @@ def clip(id, asset, src_in, dur, off, **kw):
 
 def main():
     if not SRC or not os.path.exists(SRC):
-        raise SystemExit("set CUTZONICAL_FOOTAGE to your test footage folder (see docs/TESTING.md); for a quick test without footage run tests/smoke.py")
+        raise SystemExit("set CUTGENIE_FOOTAGE to your test footage folder (see docs/TESTING.md); for a quick test without footage run tests/smoke.py")
     # test projects: camera cuts with the voice file as sound, then the sponsor video, then camera again
     base = [clip("c1", "cam", 100, 3, 0, audioSource={"asset": "voice", "sourceIn": 102}),
             clip("c2", "cam", 140, 3, 3, audioSource={"asset": "voice", "sourceIn": 142}),
@@ -168,7 +168,7 @@ def main():
         ctl("open", f"path={p_main}"); ctl("select", "clip=c2", "ids=c2"); ctl("inspector_tab", "tab=clip"); time.sleep(1)
         ctl("open", f"path={empty}"); time.sleep(1.5); ctl("open", f"path={p_main}"); time.sleep(1)
         alive = ctl("status").get("ok") is True
-        check("tab switch", alive, "still running after switching projects" if alive else "Cutzonical stopped")
+        check("tab switch", alive, "still running after switching projects" if alive else "Cutgenie stopped")
         if not alive:
             start()
         # blur area: the middle of the picture is hidden, the corners stay as they were
@@ -189,7 +189,7 @@ def main():
         # speed: split + undo on a long real project (200+ clips, 300+ graphics) stays quick
         big = BIG
         if big and os.path.exists(big):
-            cp = os.path.join(PROJ, "_check_speed.cutzonical.json"); shutil.copy(big, cp)
+            cp = os.path.join(PROJ, "_check_speed.cutgenie.json"); shutil.copy(big, cp)
             ctl("open", f"path={cp}"); time.sleep(8)          # let thumbnails and waveforms finish loading first
             ctl("split", "at=90.5"); ctl("undo")          # warm-up: the first edit after opening loads the files
             open(TIMING, "w").close()
@@ -198,7 +198,7 @@ def main():
             for m in mids:          # the middle of a clip: always a real cut (never on an existing cut)
                 for args in (("split", f"at={m:.3f}"), ("undo",)):
                     t0 = time.time(); ctl(*args); times.append(time.time() - t0)
-            # Cutzonical's own time for each edit (its timing log), not the stopwatch from outside: a background window is
+            # Cutgenie's own time for each edit (its timing log), not the stopwatch from outside: a background window is
             # scheduled unevenly by macOS, which doubled the outside numbers at random
             own = [float(l.split("total")[1].split("ms")[0]) / 1000 for l in open(TIMING) if l.startswith(("split total", "undo total"))]
             times = own or times

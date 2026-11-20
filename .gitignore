@@ -11,7 +11,7 @@ DerivedData/
 # test and scratch files
 renders/
 projects/
-*.cutzonical.json
+*.cutgenie.json
 *.cutline.json
 # macOS
 .DS_Store

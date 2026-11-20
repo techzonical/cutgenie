@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Long editing session: is Cutzonical still smooth and lean after a long time?
+"""Long editing session: is Cutgenie still smooth and lean after a long time?
 
-Runs a separate Cutzonical on port 7879 with a copy of a real project (CUTZONICAL_LONG_PROJECT: a copy of one of your projects, with full media paths),
+Runs a separate Cutgenie on port 7879 with a copy of a real project (CUTGENIE_LONG_PROJECT: a copy of one of your projects, with full media paths),
 then for N minutes does what an editor does: jump around, play, split + undo, change a clip + undo, switch projects.
 Every minute it writes memory use and how long commands take. Fails when memory keeps growing or commands slow down.
 Usage:  python3 tests/long_run.py [minutes]     (default 10)
-Nothing outside projects/_*.cutzonical.json is touched.
+Nothing outside projects/_*.cutgenie.json is touched.
 """
 import json, os, random, subprocess, sys, tempfile, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BIN = os.path.join(ROOT, ".build/release/Cutzonical")
-CTL = os.path.join(ROOT, "build/cutzonicalctl")
-PROJ = os.environ.get("CUTZONICAL_LONG_PROJECT", "")
-OTHER = os.path.join(tempfile.gettempdir(), "cutzonical-long-other.cutzonical.json")
-env = dict(os.environ, CUTZONICAL_PORT="7879", CUTZONICAL_AWAKE="1")
+BIN = os.path.join(ROOT, ".build/release/Cutgenie")
+CTL = os.path.join(ROOT, "build/cutgeniectl")
+PROJ = os.environ.get("CUTGENIE_LONG_PROJECT", "")
+OTHER = os.path.join(tempfile.gettempdir(), "cutgenie-long-other.cutgenie.json")
+env = dict(os.environ, CUTGENIE_PORT="7879", CUTGENIE_AWAKE="1")
 MIN = float(sys.argv[1]) if len(sys.argv) > 1 else 10
 
 
@@ -34,7 +34,7 @@ def rss_mb(pid):
 
 
 if not PROJ or not os.path.exists(PROJ):
-    sys.exit("set CUTZONICAL_LONG_PROJECT to a COPY of one of your projects (full media paths), see docs/TESTING.md")
+    sys.exit("set CUTGENIE_LONG_PROJECT to a COPY of one of your projects (full media paths), see docs/TESTING.md")
 os.makedirs(os.path.dirname(OTHER), exist_ok=True)
 if not os.path.exists(OTHER):     # a small second project to switch to: the first 5 clips of the same one
     p0 = json.load(open(PROJ)); p0["clips"] = p0["clips"][:5]; p0["overlays"] = []; p0["upperClips"] = []; p0["audioClips"] = []

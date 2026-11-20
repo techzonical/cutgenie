@@ -2,22 +2,22 @@
 """Quick test anyone can run - no footage needed.
 
 Makes two short test clips with ffmpeg (colour bars + a tone, a moving test pattern + another tone), builds a small
-project from them, starts a separate Cutzonical on port 7879 and checks the basics:
+project from them, starts a separate Cutgenie on port 7879 and checks the basics:
   open      the project opens with its clips
   edit      split + undo work and the clip count comes back
   text      a text layer can be added
   export    a 4 s export is written, has picture and sound, and is the right length
-Usage:  python3 tests/smoke.py [path/to/Cutzonical binary]      (default: .build/release/Cutzonical)
+Usage:  python3 tests/smoke.py [path/to/Cutgenie binary]      (default: .build/release/Cutgenie)
 Needs: ffmpeg / ffprobe on PATH, and `swift build -c release` done first.
 """
 import json, os, signal, subprocess, sys, tempfile, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BIN = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, ".build/release/Cutzonical")
-CTL = os.path.join(ROOT, ".build/release/cutzonicalctl")
+BIN = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, ".build/release/Cutgenie")
+CTL = os.path.join(ROOT, ".build/release/cutgeniectl")
 PORT = "7879"
-WORK = tempfile.mkdtemp(prefix="cutzonical-smoke-")
-env = dict(os.environ, CUTZONICAL_PORT=PORT, CUTZONICAL_AWAKE="1")
+WORK = tempfile.mkdtemp(prefix="cutgenie-smoke-")
+env = dict(os.environ, CUTGENIE_PORT=PORT, CUTGENIE_AWAKE="1")
 fails = []
 
 
@@ -68,7 +68,7 @@ def clip(i, asset, src_in, dur, off):
             "color": {"exposure": 0, "contrast": 1, "saturation": 1, "temperature": 6500}}
 
 
-proj = os.path.join(WORK, "smoke.cutzonical.json")
+proj = os.path.join(WORK, "smoke.cutgenie.json")
 json.dump({"version": 1, "name": "smoke", "titles": [],
            "assets": [{"id": "a", "path": a}, {"id": "b", "path": b}],
            "clips": [clip(1, "a", 0, 3, 0), clip(2, "b", 1, 3, 3)],
@@ -82,7 +82,7 @@ for _ in range(60):
         break
     time.sleep(0.5)
 else:
-    sys.exit("Cutzonical did not start")
+    sys.exit("Cutgenie did not start")
 
 try:
     r = ctl("open", f"path={proj}")

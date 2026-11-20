@@ -1,7 +1,7 @@
 # Testing
 
 Build first: `swift build -c release` (and `zsh scripts/build_app.sh` for the full suite).
-All tests start their own Cutzonical on port **7879**, so an open copy of the app (port 7878) is never touched.
+All tests start their own Cutgenie on port **7879**, so an open copy of the app (port 7878) is never touched.
 
 ## 1. Smoke test (no footage)
 
@@ -18,8 +18,8 @@ across a sample-rate switch, playback not getting stuck, keyframed transforms an
 crash recovery and edit speed. Point it at a folder of your own clips:
 
 ```bash
-export CUTZONICAL_FOOTAGE="/path/to/test footage"
-export CUTZONICAL_BIG_PROJECT="/path/to/a long project.cutzonical.json"   # optional, enables the speed check
+export CUTGENIE_FOOTAGE="/path/to/test footage"
+export CUTGENIE_BIG_PROJECT="/path/to/a long project.cutgenie.json"   # optional, enables the speed check
 python3 tests/check_all.py
 ```
 
@@ -36,7 +36,7 @@ The folder needs:
 ## 3. Long-session test
 
 ```bash
-export CUTZONICAL_LONG_PROJECT="/path/to/a COPY of a project.cutzonical.json"
+export CUTGENIE_LONG_PROJECT="/path/to/a COPY of a project.cutgenie.json"
 python3 tests/long_run.py 10      # minutes
 ```
 

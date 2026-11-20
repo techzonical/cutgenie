@@ -1,15 +1,15 @@
 # Control commands
 
-While Cutzonical runs it listens on `127.0.0.1:7878` (or `CUTZONICAL_PORT`). Send one command with the command-line tool:
+While Cutgenie runs it listens on `127.0.0.1:7878` (or `CUTGENIE_PORT`). Send one command with the command-line tool:
 
 ```bash
-build/cutzonicalctl <command> key=value key=value ...
+build/cutgeniectl <command> key=value key=value ...
 ```
 
 or as JSON: `POST http://127.0.0.1:7878/command` with `{"cmd": "<command>", "key": value, ...}`.
 Every reply is JSON with `"ok": true|false`, plus `"error"` when something failed. Times are seconds on the timeline.
 
-The notes below come straight from the source (`Sources/CutzonicalCore/Editor.swift`, `Editor.handle`), which is the reference.
+The notes below come straight from the source (`Sources/CutgenieCore/Editor.swift`, `Editor.handle`), which is the reference.
 
 ## Commands
 
@@ -51,7 +51,7 @@ The notes below come straight from the source (`Sources/CutzonicalCore/Editor.sw
 | `export` | out= [container=mp4/mov/m4v/m4a/wav] [codec=h264/hevc/prores422lt/prores422/prores422hq/prores4444] [mbps=] [width= height=] [audio=aac/pcm] [kbps=] [from= to=] [overwrite=true] |
 | `get_project` |  |
 | `group` | ids= (default: selection) [name=] : ties them together (⌘G) |
-| `import_fcpxml` | path=<.fcpxmld or .fcpxml> out=<project.cutzonical.json to write>. Read-only on the Final Cut project. |
+| `import_fcpxml` | path=<.fcpxmld or .fcpxml> out=<project.cutgenie.json to write>. Read-only on the Final Cut project. |
 | `layer_fx` | ids=g1,g2 type=shadow/glow/stroke/corners/blur/color/tint [any effect number, e.g. distance=20]  (adds an effect) |
 | `layer_set` | ids=g1,g2 [x= y= (px from centre) scale= rotation= opacity=] [crop=l,r,t,b] [blend=] [fade_in= fade_out=] [clear_fx=true] (at= timeline time) |
 | `lib_add` | path=<folder or file>[,<more>] : adds to the media library (testing / automation) |
@@ -83,7 +83,7 @@ The notes below come straight from the source (`Sources/CutzonicalCore/Editor.sw
 | `playback_scale` | scale=1/0.5/0.25 - viewer playback resolution |
 | `previous_marker` |  |
 | `project_settings` | [width=] [height=] [fps=] [fit=fit/fill/none] : the project's format (Project settings window) |
-| `quit` | save (when the project has a file) and close Cutzonical cleanly; used for restarts after an install |
+| `quit` | save (when the project has a file) and close Cutgenie cleanly; used for restarts after an install |
 | `redo` |  |
 | `relink_audio` | id=<audio clip> : links an unlinked sound to its video clip again |
 | `relink_folder` | dir= [all=true] : missing media files (or, with all, every file) are looked for by name in that folder and its sub-folders |
