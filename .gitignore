@@ -1,0 +1,17 @@
+# build output
+.build/
+build/
+*.dmg
+*.air
+# Swift Package Manager / Xcode
+.swiftpm/
+*.xcodeproj/
+xcuserdata/
+DerivedData/
+# test and scratch files
+renders/
+projects/
+*.cutzonical.json
+*.cutline.json
+# macOS
+.DS_Store

@@ -1,0 +1,44 @@
+# Testing
+
+Build first: `swift build -c release` (and `zsh scripts/build_app.sh` for the full suite).
+All tests start their own Cutzonical on port **7879**, so an open copy of the app (port 7878) is never touched.
+
+## 1. Smoke test (no footage)
+
+```bash
+python3 tests/smoke.py
+```
+
+It makes two short test clips with ffmpeg, then checks: open, split + undo, add text, export with picture and sound.
+
+## 2. Full check suite (your footage)
+
+`tests/check_all.py` checks bugs that only showed up on real footage: iPhone rotation, even frame timing at cuts, sound
+across a sample-rate switch, playback not getting stuck, keyframed transforms and zoom, switching projects, blur areas,
+crash recovery and edit speed. Point it at a folder of your own clips:
+
+```bash
+export CUTZONICAL_FOOTAGE="/path/to/test footage"
+export CUTZONICAL_BIG_PROJECT="/path/to/a long project.cutzonical.json"   # optional, enables the speed check
+python3 tests/check_all.py
+```
+
+The folder needs:
+
+| File | What it stands for |
+|---|---|
+| `IMG_1640.MOV` | an iPhone HEVC clip recorded sideways (carries a rotation flag), at least 4 minutes long |
+| `a-roll-audio.wav` | a separate voice recording, 44.1 kHz mono, at least 4 minutes long |
+| `Final MyPCKey sponsor message video.mov` | any clip with 48 kHz stereo sound, at least 12 seconds long |
+
+(The names are what the test looks for; rename your own files to match.) Your files are only read, never changed.
+
+## 3. Long-session test
+
+```bash
+export CUTZONICAL_LONG_PROJECT="/path/to/a COPY of a project.cutzonical.json"
+python3 tests/long_run.py 10      # minutes
+```
+
+Jumps around, plays, splits, changes clips and switches projects for N minutes, logging memory and command times every
+minute. It fails if memory keeps growing, commands error, or edits get slow. Use a copy: it edits the project (and undoes).

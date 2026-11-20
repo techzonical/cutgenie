@@ -1,0 +1,28 @@
+# Project file format
+
+A project is one JSON file, `<name>.cutzonical.json` (files named `.cutline.json`, from before the rename, open too).
+Times are in seconds. Unknown keys are ignored, and optional keys are left out when unused, so files stay small and diffable.
+
+```jsonc
+{
+  "version": 1,
+  "name": "My video",
+  "settings": { "width": 1920, "height": 1080, "fps": 30, "colorSpace": "rec709" },
+  "assets": [ { "id": "a1", "path": "Footage/IMG_1640.MOV" } ],   // absolute, or relative to the project file
+  "clips": [                                                       // V1, the main storyline
+    { "id": "c1", "asset": "a1", "sourceIn": 12.0, "duration": 4.5, "offset": 0,
+      "audio": { "gainDb": 0 }, "color": { "exposure": 0, "contrast": 1, "saturation": 1, "temperature": 6500 } }
+  ],
+  "upperClips": [],        // video on V2, V3... (field "lane": 1 = V2), with "xf" transforms
+  "audioClips": [],        // sound on A2, A3...
+  "overlays": [],          // graphics layers: text, shapes, images (keyframed position / scale / rotation / opacity)
+  "markers": [],
+  "titles": []
+}
+```
+
+Keyframes are `{ "t": seconds-from-the-clip-start, "v": [values], "e": "easing" }`, where `e` is one of `linear`
+(default, left out), `in`, `out`, `s`, `strong`, `back`, `bounce` or `bez:x1,y1,x2,y2`. The easing is for the move
+*into* that keyframe.
+
+See `Sources/CutzonicalCore/Model.swift` and `Overlay.swift` for every field.
