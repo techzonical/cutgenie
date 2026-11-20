@@ -9,7 +9,7 @@ struct CutzonicalApp: App {
     private let holder = ServerHolder()
 
     var body: some Scene {
-        WindowGroup("Cutzonical by TechZonical") {
+        WindowGroup("Cutzonical") {
             ContentView(editor: editor)
                 .frame(minWidth: 1100, minHeight: 700)
                 .task { await boot() }

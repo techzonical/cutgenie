@@ -2,7 +2,7 @@ import AppKit
 import CoreImage
 
 // Draws the lower third into a transparent image the size of the frame.
-// Colours follow look A "HUD scan" from the TechZonical style kit
+// Colours follow look A "HUD scan" from the house style kit
 // (accent #3DD9C5, panel rgba(7,26,36,.78), sub #8fb7b9). System fonts for now.
 public enum LowerThirdImage {
     public static func make(_ lt: LowerThird, width: Int, height: Int) -> CIImage? {

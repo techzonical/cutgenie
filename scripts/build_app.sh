@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Builds Cutzonical.app (code still says Cutzonical inside; the bundle id stays com.techzonical.cutzonical so settings carry over) and the cutzonicalctl tool using the Swift Package (no Xcode needed).
+# Builds Cutzonical.app and the cutzonicalctl tool using the Swift Package (no Xcode needed).
 set -e
 cd "$(dirname "$0")/.."
 swift build -c release 2>&1 | grep -v "Developer/Library/Frameworks' not found" | grep -E "error:|Compiling|Build complete" | tail -5
@@ -18,7 +18,7 @@ cat > "$APP/Contents/Info.plist" <<'P'
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
 <key>CFBundleName</key><string>Cutzonical</string>
-<key>CFBundleDisplayName</key><string>Cutzonical by TechZonical</string>
+<key>CFBundleDisplayName</key><string>Cutzonical</string>
 <key>CFBundleIdentifier</key><string>com.techzonical.cutzonical</string>
 <key>CFBundleExecutable</key><string>Cutzonical</string>
 <key>CFBundlePackageType</key><string>APPL</string>

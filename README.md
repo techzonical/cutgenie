@@ -3,7 +3,7 @@
 <h1 align="center">Cutzonical</h1>
 
 <p align="center">A native macOS video editor that you can drive by hand <em>or</em> by an AI assistant.<br>
-Made by <a href="https://techzonical.in">TechZonical</a>.</p>
+Built by Vishal Pratap · <a href="https://techzonical.in">TechZonical</a></p>
 
 ---
 
@@ -84,13 +84,19 @@ docs/                    architecture, control commands, project format, testing
 
 More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+## Who made it
+
+Cutzonical is built by **Vishal Pratap**, creator of the [TechZonical](https://techzonical.in) YouTube channel, as the
+editor he uses for his own videos. It was developed with the help of Claude (Anthropic's AI assistant), which is also
+why everything in the app can be driven through `cutzonicalctl`.
+
 ## Contributing
 
 Issues and pull requests are welcome; please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
 
 ## License
 
-Copyright (C) 2026 TechZonical.
+Copyright (C) 2026 Vishal Pratap (TechZonical).
 
 Cutzonical is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 version 3 as published by the Free Software Foundation. It is distributed in the hope that it will be useful, but
