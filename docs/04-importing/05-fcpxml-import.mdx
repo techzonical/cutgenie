@@ -1,0 +1,23 @@
+---
+title: Bring in a Final Cut Pro project
+description: Turn a Final Cut Pro XML export into a Cutgenie project.
+section: Importing
+order: 5
+---
+
+# Bring in a Final Cut Pro project
+
+If you've edited in Final Cut Pro, you can bring that edit into Cutgenie.
+
+1. In Final Cut Pro, choose **File ▸ Export XML…** and save the `.fcpxml` file.
+2. Ask Claude to import it (see the *Editing with Claude* chapter), for example:
+   *"Import ~/Desktop/MyVideo.fcpxml into a new Cutgenie project next to it."*
+
+Or, in Terminal, if you have Cutgenie's command-line tool:
+
+```bash
+cutgeniectl import_fcpxml path=~/Desktop/MyVideo.fcpxml out=~/Desktop/MyVideo.cutgenie.json
+```
+
+Then open the new project with **⌘O**. Your Final Cut project is only read, never changed.
+Clips, cuts, sound levels and simple animations come across; some Final Cut effects have no match and are left out.

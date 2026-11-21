@@ -30,8 +30,15 @@ stop_test_app() { for p in $(lsof -nP -iTCP:7879 -sTCP:LISTEN -t 2>/dev/null); d
 shot() {
   mkdir -p "$IMG/${1:h}"; sleep 1
   local id=$($CTL ui_window | python3 -c 'import json,sys;print(json.load(sys.stdin).get("window",0))')
-  screencapture -x -o -l $id "$IMG/$1" && echo "  $1" || echo "  FAILED $1"
+  screencapture -x -o -l $id "$IMG/$1" 2>/dev/null && { echo "  $1"; return 0 }
+  echo "FAILED $1: macOS refused the capture. Is the screen locked or asleep, or is Screen Recording not allowed?"; exit 1
 }
+
+# crop <file> <x> <y> <w> <h> : keep one part of a window shot (pixels in the 2x image; the window is 2880x1782)
+crop() { sips -c $5 $4 --cropOffset $3 $2 "$IMG/$1" >/dev/null && echo "    cropped" }
+# panel regions of the 1440x900 window
+MEDIA_R=(0 60 880 860); INSP_R=(1924 60 956 860)
+part() { local f=$1; shift; shot $f; crop $f "$@" }
 
 # ---- sample footage (swappable) ----
 MEDIA=${CUTGENIE_SAMPLE_MEDIA:-$WORK/media}
@@ -46,6 +53,9 @@ fi
 
 # ---- start the test copy ----
 stop_test_app
+# The bare .build binary keeps its settings under the name "Cutgenie" (not com.techzonical.cutgenie, the installed
+# app), so clearing its tab and recent-project lists here never touches your own settings.
+for k in projectTabs projects.recent projects.recentFolders lastProject; do defaults delete Cutgenie $k >/dev/null 2>&1 || true; done
 $BIN >/dev/null 2>&1 &
 for i in {1..60}; do lsof -nP -iTCP:7879 -sTCP:LISTEN -t >/dev/null 2>&1 && break; sleep 0.5; done
 trap stop_test_app EXIT
@@ -66,6 +76,52 @@ if want 01; then
   ctl seek time=3
   shot 01-getting-started/sample-project.png
   ctl ui_open what=new; shot 01-getting-started/new-project-sheet.png; ctl ui_key key=escape
+fi
+
+# ---- 02 Interface ----
+if want 02; then
+  echo "02-interface"
+  ctl lib_add path=$MEDIA; ctl ui_key key=z mods=shift; ctl select clip=c2 ids=c2; ctl seek time=10
+  ctl inspector_tab tab=clip
+  shot 02-interface/window-tour.png
+  part 02-interface/media-panel.png $MEDIA_R
+  part 02-interface/inspector-effects.png $INSP_R
+  ctl inspector_tab tab=color; part 02-interface/inspector-colour.png $INSP_R
+  ctl inspector_tab tab=audio; part 02-interface/inspector-audio.png $INSP_R
+  ctl inspector_tab tab=clip
+  shot 02-interface/timeline.png
+  ctl ui_key key=t mods=shift,command; shot 02-interface/big-timeline.png; ctl ui_key key=t mods=shift,command
+fi
+
+# ---- 03 Projects ----
+if want 03; then
+  echo "03-projects"
+  ctl save; ctl set_color clip=c1 exposure=0.3; ctl save; ctl set_color clip=c1 exposure=0; ctl save
+  ctl ui_open what=browser;  shot 03-projects/project-browser.png;  ctl ui_key key=escape
+  ctl ui_open what=settings; shot 03-projects/project-settings.png; ctl ui_key key=escape
+  ctl ui_open what=versions; shot 03-projects/versions.png;         ctl ui_key key=escape
+fi
+
+# ---- 04 Importing ----
+if want 04; then
+  echo "04-importing"
+  ctl lib_add path=$MEDIA
+  part 04-importing/media-library.png 0 60 880 640
+fi
+
+# ---- 05 Editing basics ----
+if want 05; then
+  echo "05-editing-basics"
+  ctl ui_key key=z mods=shift; ctl select clip=c1 ids=c1; ctl seek time=4
+  shot 05-editing-basics/playhead.png
+  ctl split at=4; ctl select clip=c2 ids=c2
+  shot 05-editing-basics/after-blade.png
+  ctl undo
+  ctl add_marker at=2 name="Intro ends"; ctl add_marker at=12 name="Best bit"
+  shot 05-editing-basics/markers.png
+  ctl set_speed clip=c3 speed=0.5
+  shot 05-editing-basics/speed.png
+  ctl undo
 fi
 
 echo "done: images are in $IMG/"
