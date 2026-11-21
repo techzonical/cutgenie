@@ -214,6 +214,7 @@ public final class Editor: ObservableObject {
     public var uiPNG: ((String) -> Bool)?
     public var uiWindowID: (() -> Int)?
     public var uiSize: ((Double, Double) -> Bool)?
+    public var uiSplit: ((Double) -> Bool)?
     public var uiMouse: (@MainActor ([CGPoint], [String]) -> Bool)?   // set by the app: sends mouse events to its own window (testing)
     public var snapshotUI: (@MainActor (String, String) -> Bool)?     // set by the app: renders its own interface to a PNG
     var refreshing = false, refreshDirty = false
@@ -1554,6 +1555,7 @@ public final class Editor: ObservableObject {
         case "pause": player.pause(); return [:]
         case "seek":
             let t = try need(num(c, "time"), "time")
+            playhead = t
             revealPlayhead(t)
             await player.seek(to: CMTime(seconds: t, preferredTimescale: 6000), toleranceBefore: .zero, toleranceAfter: .zero)
             return ["time": t]
@@ -3191,6 +3193,10 @@ public final class Editor: ObservableObject {
             // testing aid (screenshots): w= h= window points; the main window is resized and moved to the top-left
             guard let f = uiSize else { throw RenderError.message("no hook") }
             let ok = f(try need(num(c, "w"), "w"), try need(num(c, "h"), "h")); try? await Task.sleep(nanoseconds: 600_000_000); return ["ok_sent": ok]
+        case "ui_split":
+            // testing aid (screenshots): top= height in points of the viewer row (the line between it and the timeline)
+            guard let f = uiSplit else { throw RenderError.message("no hook") }
+            let ok = f(try need(num(c, "top"), "top")); try? await Task.sleep(nanoseconds: 600_000_000); return ["ok_sent": ok]
         case "ui_window":
             return ["window": uiWindowID?() ?? 0]
         case "ui_png":
@@ -3215,6 +3221,16 @@ public final class Editor: ObservableObject {
             return ["ok_sent": ok, "pps": pxPerSec, "zoom": zoomDebug]
         case "set_tool":
             tool = try need(str(c, "tool"), "tool"); return ["tool": tool]
+        case "ui_sections":
+            // testing aid: only=key1,key2 opens just those inspector sections (keys as in InspectorSection, e.g. wheels, a.eq,
+            // pip.zoom) and folds every other one; all=open unfolds them all again
+            let all = ["clip.volume", "clip.fades", "clip.info", "clip.speed", "a.gate", "a.eq", "a.comp", "a.out", "a.loud", "input", "basic",
+                       "wheels", "looks", "project", "viewer", "fx.shape", "fx.transform", "fx.crop", "fx.mask", "fx.behave", "fx.build", "fx.fade",
+                       "fx.effects", "fx.text", "pip.zoom", "pip.slide", "pip.keys", "pip.transform", "pip.shadow", "pip.crop"]
+            let only = Set((str(c, "only") ?? "").split(separator: ",").map(String.init))
+            for k in all { UserDefaults.standard.set(str(c, "all") == "open" || only.contains(k), forKey: "inspector.section." + k) }
+            try? await Task.sleep(nanoseconds: 400_000_000)
+            return ["open": Array(only)]
         case "ui_state":
             return ["tl": [timelineFrame.minX, timelineFrame.minY, timelineFrame.width, timelineFrame.height], "skim": live.skim ?? -1, "hover": hoverX ?? -1, "scroll_x": scrollX, "scroll_y": scrollY, "zoom": zoomDebug, "msg": lastMessage, "tool": tool, "selection": Array(selection), "clips": project.clips.count, "graphics": project.overlays?.count ?? 0, "playhead": playhead, "pps": pxPerSec]
         case "add_marker":

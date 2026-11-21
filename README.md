@@ -29,6 +29,21 @@ can make the edits for you and you can check and adjust them by hand.
   H.264, ProRes masters and sound only; exports run in the background.
 - **Import:** Final Cut Pro XML (`.fcpxml`).
 
+## The best of Final Cut Pro and Premiere Pro
+
+Cutgenie takes the ideas that work best in the two big editors and puts them in one simple, free app:
+
+- **From Final Cut Pro:** the magnetic main track, skimming, one-key tools (A, B, T, P, Z, H), W / E insert and
+  append, paste attributes (⇧⌘V), volume lines on the timeline, text builds and behaviours, saved titles, and FCPXML
+  import.
+- **From Premiere Pro:** numbered V1 / V2 / A1 tracks, adjustment layers, a Lumetri-style Basic colour panel with
+  wheels and LUTs, effects per sound track, one-click loudness matching to −14 LUFS, and exporting in the background.
+- **Only in Cutgenie:** editing with an AI assistant through `cutgeniectl`, automatic versions of every project, and
+  built-in blur areas to hide faces or private text.
+
+The docs page [Coming from Final Cut Pro or Premiere Pro](docs/01-getting-started/07-coming-from-other-editors.mdx)
+has the full comparison.
+
 ## Requirements
 
 - macOS 14 (Sonoma) or later, Apple Silicon recommended

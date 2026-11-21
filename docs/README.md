@@ -15,6 +15,7 @@ You don't need to know anything about video editing to start. Every page does on
 4. [Open it for the first time](01-getting-started/04-first-launch.mdx)
 5. [Update to a new version](01-getting-started/05-updating.mdx)
 6. [Remove Cutgenie](01-getting-started/06-uninstalling.mdx)
+7. [Coming from Final Cut Pro or Premiere Pro](01-getting-started/07-coming-from-other-editors.mdx)
 
 ### 2. The interface
 1. [A tour of the window](02-interface/01-window-tour.mdx)
@@ -58,9 +59,53 @@ You don't need to know anything about video editing to start. Every page does on
 10. [Groups and linked sound](05-editing-basics/10-groups-linking.mdx)
 11. [Speed and slow motion](05-editing-basics/11-speed.mdx)
 
+### 6. Picture
+1. [Move, resize and turn a clip](06-picture/01-move-resize.mdx)
+2. [Zoom in on the picture](06-picture/02-zoom.mdx)
+3. [Crop the edges](06-picture/03-crop.mdx)
+4. [Picture in picture](06-picture/04-picture-in-picture.mdx)
+5. [Keyframes: make things change over time](06-picture/05-keyframes.mdx)
+6. [Adjustment layers](06-picture/06-adjustment-layer.mdx)
+7. [Copy effects to other clips](06-picture/07-copy-effects.mdx)
+
+### 7. Colour
+1. [Colour basics](07-colour/01-basics.mdx)
+2. [Colour wheels](07-colour/02-wheels.mdx)
+3. [LUTs](07-colour/03-luts.mdx)
+4. [Make clips match](07-colour/04-match.mdx)
+5. [Save and reuse a look](07-colour/05-looks.mdx)
+
+### 8. Graphics
+1. [Add text](08-graphics/01-add-text.mdx)
+2. [Style text](08-graphics/02-style-text.mdx)
+3. [Animate text](08-graphics/03-animate-text.mdx)
+4. [Shapes](08-graphics/04-shapes.mdx)
+5. [Layer effects](08-graphics/05-effects.mdx)
+6. [Hide something with a blur](08-graphics/06-blur-area.mdx)
+7. [Save and reuse titles](08-graphics/07-titles.mdx)
+
+### 9. Sound
+1. [Change a clip's volume](09-sound/01-volume.mdx)
+2. [Fade sound in and out](09-sound/02-fades.mdx)
+3. [Add music](09-sound/03-music.mdx)
+4. [Clean up a voice](09-sound/04-clean-voice.mdx)
+5. [Set the loudness](09-sound/05-loudness.mdx)
+6. [Save audio settings](09-sound/06-presets.mdx)
+
+### 10. Exporting
+1. [Export your video](10-exporting/01-export.mdx)
+2. [Which preset to use](10-exporting/02-presets.mdx)
+3. [Custom settings](10-exporting/03-custom.mdx)
+4. [Export just a part](10-exporting/04-part.mdx)
+5. [If the file already exists](10-exporting/05-overwrite.mdx)
+
+### 11. Shortcuts
+1. [The keyboard map](11-shortcuts/01-keyboard-map.mdx)
+2. [Change a shortcut](11-shortcuts/02-my-keys.mdx)
+3. [All shortcuts](11-shortcuts/03-list.mdx)
+
 ### Coming soon
-6. Picture · 7. Colour · 8. Graphics ·
-9. Sound · 10. Exporting · 11. Shortcuts · 12. Editing with Claude · 13. Reference
+12. Editing with Claude · 13. Reference
 
 ---
 

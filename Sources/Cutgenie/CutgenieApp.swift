@@ -118,6 +118,16 @@ struct CutgenieApp: App {
                 guard let main = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil && $0.sheetParent == nil }) else { return 0 }
                 return (main.attachedSheet ?? main).windowNumber
             }
+            ed.uiSplit = { top in
+                guard let w = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil }), let cv = w.contentView else { return false }
+                func find(_ v: NSView) -> NSSplitView? {
+                    if let s = v as? NSSplitView, !s.isVertical { return s }
+                    for c in v.subviews { if let s = find(c) { return s } }
+                    return nil
+                }
+                guard let sv = find(cv) else { return false }
+                sv.setPosition(top, ofDividerAt: 0); return true
+            }
             ed.uiSize = { w, h in
                 guard let main = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil && $0.sheetParent == nil }) else { return false }
                 let top = main.screen?.visibleFrame ?? NSRect(x: 0, y: 0, width: w, height: h)
