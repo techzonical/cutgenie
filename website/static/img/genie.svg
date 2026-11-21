@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="705 0 470 420"><defs>
+<radialGradient id="glow" cx="75%" cy="40%" r="55%"><stop offset="0" stop-color="#f5a93a" stop-opacity=".35"/><stop offset="1" stop-color="#121014" stop-opacity="0"/></radialGradient>
+<linearGradient id="amb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc463"/><stop offset="1" stop-color="#e8862a"/></linearGradient>
+<linearGradient id="smoke" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#5fd4c4" stop-opacity=".9"/><stop offset="1" stop-color="#7fe6d6"/></linearGradient>
+</defs><!-- lamp -->
+<g transform="translate(860,330)">
+<ellipse cx="0" cy="62" rx="110" ry="12" fill="#000" opacity=".35"/>
+<path d="M-90 30 q0 30 70 32 h40 q60 -2 70 -32 z" fill="url(#amb)"/>
+<path d="M40 40 q50 -6 84 -36 l8 8 q-30 40 -84 46z" fill="url(#amb)"/>
+<path d="M-90 34 q-40 -4 -46 -30 q14 18 46 14z" fill="#e8862a"/>
+<rect x="-50" y="18" width="70" height="14" rx="7" fill="#ffc463"/>
+<!-- smoke -->
+<path d="M128 0 q30 -40 -10 -80 q-40 -40 0 -90 q20 -20 10 -50" stroke="url(#smoke)" stroke-width="34" fill="none" stroke-linecap="round" opacity=".85"/>
+</g>
+<!-- genie -->
+<g transform="translate(980,150)">
+<ellipse cx="0" cy="40" rx="62" ry="58" fill="#5fd4c4"/>
+<ellipse cx="0" cy="-12" rx="48" ry="46" fill="#7fe6d6"/>
+<!-- turban as clapperboard -->
+<rect x="-46" y="-70" width="92" height="30" rx="6" fill="#1e1a17"/>
+<path d="M-46 -70 l92 -18 l4 14 l-92 18z" fill="#f5a93a"/>
+<path d="M-30 -80 l10 14 M-8 -84 l10 14 M14 -88 l10 14" stroke="#1e1a17" stroke-width="5"/>
+<circle cx="0" cy="-54" r="7" fill="#ffe3b0"/>
+<!-- face -->
+<ellipse cx="-17" cy="-12" rx="6" ry="8" fill="#0f2b27"/><ellipse cx="17" cy="-12" rx="6" ry="8" fill="#0f2b27"/>
+<circle cx="-15" cy="-15" r="2" fill="#fff"/><circle cx="19" cy="-15" r="2" fill="#fff"/>
+<path d="M-16 10 q16 14 32 0" stroke="#0f2b27" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="-30" cy="4" rx="7" ry="4" fill="#ff6f91" opacity=".6"/><ellipse cx="30" cy="4" rx="7" ry="4" fill="#ff6f91" opacity=".6"/>
+<!-- arm with magic blade -->
+<path d="M-56 40 q-50 -10 -70 -60" stroke="#5fd4c4" stroke-width="20" stroke-linecap="round" fill="none"/>
+<line x1="-140" y1="-110" x2="-118" y2="-10" stroke="#ffe3b0" stroke-width="8" stroke-linecap="round"/>
+<path d="M-150 -130 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" fill="#ffe3b0"/>
+<path d="M56 40 q40 0 50 -40" stroke="#5fd4c4" stroke-width="20" stroke-linecap="round" fill="none"/>
+<circle cx="108" cy="-6" r="13" fill="#7fe6d6"/>
+</g>
+<!-- sparkles -->
+<g fill="#ffe3b0"><path d="M770 130 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z"/><path d="M1130 120 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z"/><path d="M1080 300 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z"/></g>
+</svg>
