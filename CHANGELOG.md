@@ -4,6 +4,8 @@
 
 - Documentation: 13 chapters for beginners in `docs/`, with screenshots made by `scripts/make_screenshots.sh`.
 - Claude Code skills (`skills/`) and plugin (`.claude-plugin/`) for editing by asking Claude.
+- Cutgenie extension for the Claude desktop app (`mcp/`, packed by `scripts/make_mcpb.sh`): an MCP server with no
+  dependencies that saves a version before editing and never replaces an export without a yes.
 - New control command `set_zoom` (main-track zoom keyframes); testing aids `ui_size`, `ui_sections`, `ui_split`.
 - Fix: `seek` now moves the playhead as well as the picture.
 

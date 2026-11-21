@@ -1,0 +1,8 @@
+{
+  "name": "cutgenie-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cutgenie connector for the Claude desktop app (MCP server, no dependencies)",
+  "main": "server/index.js",
+  "license": "GPL-3.0"
+}

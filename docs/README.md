@@ -107,12 +107,13 @@ You don't need to know anything about video editing to start. Every page does on
 ### 12. Editing with Claude
 1. [How editing with Claude works](12-editing-with-claude/01-how-it-works.mdx)
 2. [Install the Cutgenie skills](12-editing-with-claude/02-install.mdx)
-3. [Safety: what Claude will and won't do](12-editing-with-claude/03-safety.mdx)
-4. [The skills](12-editing-with-claude/04-skills.mdx)
-5. [Example: remove pauses](12-editing-with-claude/05-remove-pauses.mdx)
-6. [Example: titles and zooms](12-editing-with-claude/06-titles-and-zooms.mdx)
-7. [Example: sound and export](12-editing-with-claude/07-sound-and-export.mdx)
-8. [Tips for asking](12-editing-with-claude/08-tips.mdx)
+3. [Use the Claude app instead of Claude Code](12-editing-with-claude/03-claude-desktop.mdx)
+4. [Safety: what Claude will and won't do](12-editing-with-claude/04-safety.mdx)
+5. [The skills](12-editing-with-claude/05-skills.mdx)
+6. [Example: remove pauses](12-editing-with-claude/06-remove-pauses.mdx)
+7. [Example: titles and zooms](12-editing-with-claude/07-titles-and-zooms.mdx)
+8. [Example: sound and export](12-editing-with-claude/08-sound-and-export.mdx)
+9. [Tips for asking](12-editing-with-claude/09-tips.mdx)
 
 ### 13. Reference
 1. [Glossary](13-reference/01-glossary.mdx)

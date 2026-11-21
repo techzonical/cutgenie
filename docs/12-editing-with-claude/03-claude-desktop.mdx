@@ -1,0 +1,37 @@
+---
+title: Use the Claude app instead of Claude Code
+description: Install the Cutgenie extension in the Claude app for Mac and edit by chatting.
+section: Editing with Claude
+order: 3
+---
+
+# Use the Claude app instead of Claude Code
+
+Don't use Claude Code? The regular **Claude app for Mac** can edit in Cutgenie too, with the **Cutgenie extension**.
+
+1. Download **Cutgenie.mcpb** from the Cutgenie releases page on GitHub.
+2. Open the Claude app, then double-click **Cutgenie.mcpb**. (Or open **Claude ▸ Settings ▸ Extensions** and drag the
+   file in.)
+3. Click **Install**. Leave the port at **7878** unless you changed it.
+4. Open Cutgenie and the project you want to edit.
+5. In a new chat, ask: *Can you see my Cutgenie?*
+
+The first time Claude uses a Cutgenie tool, the Claude app asks for your permission. You can allow it once or always.
+
+**What Claude can do with it**: everything in [The skills](05-skills.mdx): cut pauses, trim, add titles, zoom, fix
+sound and colour, blur, export, and check the edit. It can also show you a frame of the edited picture in the chat.
+
+**The same safety rules**, built into the extension itself:
+
+- it saves a version before the first edit,
+- it never changes your original recordings,
+- it never replaces an existing export unless you say yes,
+- it can't close Cutgenie or delete your saved looks, titles or presets.
+
+**Removing pauses** uses **ffmpeg**. If it isn't installed, Claude tells you and asks first.
+
+> While the Cutgenie code is private, the extension file is only available to people with access.
+
+## Next
+
+[Safety: what Claude will and won't do →](04-safety.mdx)

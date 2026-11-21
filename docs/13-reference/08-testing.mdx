@@ -61,6 +61,13 @@ own app, projects and media are never touched. It needs Screen Recording permiss
 unlocked screen, and Python with Pillow. Put your own `clip1.mp4`–`clip3.mp4` and `music.m4a` in a folder and set
 `CUTGENIE_SAMPLE_MEDIA` to that folder to use real footage.
 
+## Claude connectors
+
+```bash
+node mcp/test.js                                 # the Claude desktop extension: 25 checks on port 7879
+zsh scripts/make_mcpb.sh                         # packs build/Cutgenie.mcpb
+```
+
 ## Keeping the command list current
 
 After adding or changing a control command, rebuild the table in [Control commands](06-control-commands.mdx):

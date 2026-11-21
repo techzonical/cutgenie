@@ -1,0 +1,49 @@
+{
+  "manifest_version": "0.3",
+  "name": "cutgenie",
+  "display_name": "Cutgenie",
+  "version": "0.1.0",
+  "description": "Edit videos in Cutgenie by chatting with Claude: cut pauses, trim, titles, zooms, sound, colour, blur and export.",
+  "long_description": "Lets Claude edit the project open in **Cutgenie**, the macOS video editor, on this Mac. Ask in plain words, for example *cut the pauses out of my intro* or *export it for YouTube*.\n\nSafety: your original video and sound files are never changed. A version of the project is saved before the first edit, mistakes are undone, and an existing export is only replaced after you say yes. Cutgenie only accepts commands from this Mac.",
+  "author": { "name": "Vishal Pratap", "url": "https://techzonical.in" },
+  "homepage": "https://github.com/techzonical/cutgenie",
+  "repository": { "type": "git", "url": "https://github.com/techzonical/cutgenie" },
+  "license": "GPL-3.0",
+  "icon": "icon.png",
+  "keywords": ["video", "editing", "cutgenie", "youtube", "macos"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": { "CUTGENIE_PORT": "${user_config.port}" }
+    }
+  },
+  "user_config": {
+    "port": {
+      "type": "number",
+      "title": "Cutgenie port",
+      "description": "The port Cutgenie listens on. Leave it at 7878 unless you changed CUTGENIE_PORT.",
+      "default": 7878,
+      "min": 1024,
+      "max": 65535,
+      "required": false
+    }
+  },
+  "tools": [
+    { "name": "cutgenie_status", "description": "Check that Cutgenie is open and which project is loaded." },
+    { "name": "cutgenie_get_project", "description": "Read the clips, graphics, sound and markers of the open project." },
+    { "name": "cutgenie_command", "description": "Run one editing command (split, trim, remove a range, text, zoom, colour, volume…)." },
+    { "name": "cutgenie_undo", "description": "Undo the last edit." },
+    { "name": "cutgenie_redo", "description": "Redo the last undone edit." },
+    { "name": "cutgenie_save", "description": "Save the project (the old file is kept as a version)." },
+    { "name": "cutgenie_render_frame", "description": "Show the edited picture at a time." },
+    { "name": "cutgenie_find_silences", "description": "Find silent pauses in a clip's file (read only)." },
+    { "name": "cutgenie_export", "description": "Export a video or sound file; never replaces a file without a yes." }
+  ],
+  "compatibility": {
+    "platforms": ["darwin"],
+    "runtimes": { "node": ">=18.0.0" }
+  }
+}

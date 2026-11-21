@@ -40,7 +40,11 @@ edits in plain words (*"cut the pauses out of my intro"*, *"export it for YouTub
 
 There are 11 skills, in [`skills/`](skills): setup, projects, rough cut, trim, titles, zoom and motion, sound, colour,
 blur, export and review. Every one saves a version before editing, never touches your original media, undoes its own
-mistakes and asks before overwriting an export. See [Editing with Claude](docs/12-editing-with-claude/01-how-it-works.mdx).
+mistakes and asks before overwriting an export.
+
+No Claude Code? The regular Claude app for Mac can do the same with the **Cutgenie extension**: build it with
+`zsh scripts/make_mcpb.sh` (it makes `build/Cutgenie.mcpb`) and double-click it. The connector lives in [`mcp/`](mcp).
+See [Editing with Claude](docs/12-editing-with-claude/01-how-it-works.mdx).
 
 ## The best of Final Cut Pro and Premiere Pro
 
