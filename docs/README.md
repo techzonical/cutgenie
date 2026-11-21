@@ -104,8 +104,18 @@ You don't need to know anything about video editing to start. Every page does on
 2. [Change a shortcut](11-shortcuts/02-my-keys.mdx)
 3. [All shortcuts](11-shortcuts/03-list.mdx)
 
+### 12. Editing with Claude
+1. [How editing with Claude works](12-editing-with-claude/01-how-it-works.mdx)
+2. [Install the Cutgenie skills](12-editing-with-claude/02-install.mdx)
+3. [Safety: what Claude will and won't do](12-editing-with-claude/03-safety.mdx)
+4. [The skills](12-editing-with-claude/04-skills.mdx)
+5. [Example: remove pauses](12-editing-with-claude/05-remove-pauses.mdx)
+6. [Example: titles and zooms](12-editing-with-claude/06-titles-and-zooms.mdx)
+7. [Example: sound and export](12-editing-with-claude/07-sound-and-export.mdx)
+8. [Tips for asking](12-editing-with-claude/08-tips.mdx)
+
 ### Coming soon
-12. Editing with Claude · 13. Reference
+13. Reference
 
 ---
 

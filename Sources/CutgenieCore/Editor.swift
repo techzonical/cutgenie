@@ -2612,6 +2612,23 @@ public final class Editor: ObservableObject {
                 self.shiftConnected(&p, clip: cl.id, by: d)
             }
             return ["delta": d]
+        case "set_zoom":
+            // clip=<V1 clip> keys="t:scale[:ease],..." (t = seconds from the clip's start, scale 1.2 = 20 % closer, ease = linear|in|out|s)
+            // [anchor=x,y: the point that stays still, Final Cut units from the centre, y up]. keys="" removes the zoom.
+            let id = try need(str(c, "clip"), "clip"); try refuseIfLocked([id])
+            guard let i = project.clips.firstIndex(where: { $0.id == id }) else { throw RenderError.message("no V1 clip \(id) (zoom is for the main track; use pip for V2+)") }
+            var ks: [Keyframe] = []
+            for part in (str(c, "keys") ?? "").split(separator: ",") {
+                let f = part.split(separator: ":").map(String.init)
+                guard f.count >= 2, let t = Double(f[0]), let v = Double(f[1]), v > 0 else { throw RenderError.message("keys look like 0:1,3:1.2:s") }
+                ks.append(Keyframe(t: t, v: [v], e: f.count > 2 && f[2] != "linear" ? f[2] : nil))
+            }
+            let anchor = str(c, "anchor")?.split(separator: ",").compactMap { Double($0) }
+            try await mutate { p in
+                p.clips[i].zoom = ks.isEmpty ? nil : ks.sorted { $0.t < $1.t }
+                if let a = anchor, a.count == 2 { p.clips[i].zoomAnchor = a }
+            }
+            return ["clip": id, "keys": ks.count]
         case "set_fade":
             // id=<clip or audio clip> [in=<seconds>] [out=<seconds>]
             let id = try need(str(c, "id"), "id")

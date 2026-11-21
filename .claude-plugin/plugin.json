@@ -1,0 +1,10 @@
+{
+  "name": "cutgenie",
+  "version": "0.1.0",
+  "description": "Edit videos in Cutgenie, the native macOS video editor, by talking to Claude: rough cuts, trims, titles, zooms, sound, colour, blur and export. Every skill works on a running Cutgenie through its local control port and keeps your original media safe.",
+  "author": { "name": "Vishal Pratap", "url": "https://techzonical.in" },
+  "homepage": "https://github.com/techzonical/cutgenie",
+  "repository": "https://github.com/techzonical/cutgenie",
+  "license": "GPL-3.0",
+  "keywords": ["video", "editing", "macos", "cutgenie", "youtube"]
+}

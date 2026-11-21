@@ -1,0 +1,32 @@
+---
+title: Install the Cutgenie skills
+description: Add the Cutgenie skills to Claude Code.
+section: Editing with Claude
+order: 2
+---
+
+# Install the Cutgenie skills
+
+You need **Claude Code** and Cutgenie on the same Mac.
+
+1. Open Claude Code.
+2. Type this and press Return:
+
+   ```text
+   /plugin install cutgenie --marketplace techzonical/cutgenie
+   ```
+
+   On an older Claude Code, use two steps instead: `/plugin marketplace add techzonical/cutgenie`, then
+   `/plugin install cutgenie@cutgenie`.
+
+3. Open Cutgenie and the project you want to edit.
+4. Ask Claude: *Can you see my Cutgenie?* Claude checks the connection and tells you which project is open.
+
+> While the Cutgenie code is private on GitHub, the install only works for people who have been given access.
+
+**Nothing else to install.** The skills talk to Cutgenie with `curl`, which every Mac already has. Some jobs use extra
+free tools: removing pauses uses **ffmpeg**. Claude will ask before installing anything.
+
+## Next
+
+[Safety: what Claude will and won't do →](03-safety.mdx)

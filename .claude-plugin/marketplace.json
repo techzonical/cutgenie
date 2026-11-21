@@ -1,0 +1,15 @@
+{
+  "name": "cutgenie",
+  "description": "Cutgenie's skills for editing videos with Claude Code.",
+  "owner": {
+    "name": "TechZonical",
+    "url": "https://techzonical.in"
+  },
+  "plugins": [
+    {
+      "name": "cutgenie",
+      "source": "./",
+      "description": "Skills for editing videos in Cutgenie with Claude."
+    }
+  ]
+}

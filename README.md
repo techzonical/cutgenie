@@ -29,6 +29,19 @@ can make the edits for you and you can check and adjust them by hand.
   H.264, ProRes masters and sound only; exports run in the background.
 - **Import:** Final Cut Pro XML (`.fcpxml`).
 
+## Edit with Claude
+
+Install the Cutgenie skills in [Claude Code](https://claude.com/claude-code), open a project in Cutgenie, and ask for
+edits in plain words (*"cut the pauses out of my intro"*, *"export it for YouTube"*):
+
+```text
+/plugin install cutgenie --marketplace techzonical/cutgenie
+```
+
+There are 11 skills, in [`skills/`](skills): setup, projects, rough cut, trim, titles, zoom and motion, sound, colour,
+blur, export and review. Every one saves a version before editing, never touches your original media, undoes its own
+mistakes and asks before overwriting an export. See [Editing with Claude](docs/12-editing-with-claude/01-how-it-works.mdx).
+
 ## The best of Final Cut Pro and Premiere Pro
 
 Cutgenie takes the ideas that work best in the two big editors and puts them in one simple, free app:
