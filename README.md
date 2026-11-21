@@ -35,6 +35,13 @@ can make the edits for you and you can check and adjust them by hand.
 - Xcode 15+ command line tools (`xcode-select --install`), including the Metal toolchain (`xcrun metal`)
 - [ffmpeg](https://ffmpeg.org) on your PATH (`brew install ffmpeg`): used by the build for a tiny filler clip and by the tests
 
+## Install
+
+1. Download `Cutgenie-<version>.dmg` from the [Releases](https://github.com/techzonical/cutgenie/releases) page.
+2. Open it and drag **Cutgenie** into **Applications**.
+3. The first time, macOS may say it can't check the app for malicious software (early builds aren't notarised by
+   Apple yet). Open **System Settings ▸ Privacy & Security**, scroll down and click **Open Anyway**. You only do this once.
+
 ## Build and run
 
 ```bash
@@ -45,7 +52,7 @@ open build/Cutgenie.app
 ```
 
 `swift build -c release` alone builds the binaries; `scripts/build_app.sh` wraps them into a proper `.app` with the
-Metal colour kernels and the icon. `scripts/install.sh` copies the app to `/Applications` and makes a `.dmg`.
+Metal colour kernels and the icon. `scripts/make_dmg.sh` makes the drag-to-install disk image in `build/`; `scripts/install.sh` copies the app to `/Applications`.
 
 ## Driving it from a script or an AI assistant
 
