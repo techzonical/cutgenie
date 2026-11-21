@@ -213,6 +213,7 @@ public final class Editor: ObservableObject {
     public var uiOpen: ((String) -> Bool)?
     public var uiPNG: ((String) -> Bool)?
     public var uiWindowID: (() -> Int)?
+    public var uiSize: ((Double, Double) -> Bool)?
     public var uiMouse: (@MainActor ([CGPoint], [String]) -> Bool)?   // set by the app: sends mouse events to its own window (testing)
     public var snapshotUI: (@MainActor (String, String) -> Bool)?     // set by the app: renders its own interface to a PNG
     var refreshing = false, refreshDirty = false
@@ -3186,6 +3187,10 @@ public final class Editor: ObservableObject {
                 Log.write("quit was refused; closing directly"); self?.releaseLock(); exit(0)
             }
             return ["quitting": true]
+        case "ui_size":
+            // testing aid (screenshots): w= h= window points; the main window is resized and moved to the top-left
+            guard let f = uiSize else { throw RenderError.message("no hook") }
+            let ok = f(try need(num(c, "w"), "w"), try need(num(c, "h"), "h")); try? await Task.sleep(nanoseconds: 600_000_000); return ["ok_sent": ok]
         case "ui_window":
             return ["window": uiWindowID?() ?? 0]
         case "ui_png":

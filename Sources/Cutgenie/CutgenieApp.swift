@@ -118,6 +118,12 @@ struct CutgenieApp: App {
                 guard let main = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil && $0.sheetParent == nil }) else { return 0 }
                 return (main.attachedSheet ?? main).windowNumber
             }
+            ed.uiSize = { w, h in
+                guard let main = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil && $0.sheetParent == nil }) else { return false }
+                let top = main.screen?.visibleFrame ?? NSRect(x: 0, y: 0, width: w, height: h)
+                main.setFrame(NSRect(x: top.minX + 40, y: top.maxY - h - 40, width: w, height: h), display: true)
+                return true
+            }
             ed.uiPNG = { path in
                 guard let main = NSApp.windows.first(where: { $0.isVisible && $0.contentView != nil && $0.sheetParent == nil }) else { return false }
                 let w = main.attachedSheet ?? main
