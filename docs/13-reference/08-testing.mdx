@@ -1,3 +1,10 @@
+---
+title: Testing
+description: How to run the smoke test, the full checks and the long-run test.
+section: Reference
+order: 8
+---
+
 # Testing
 
 Build first: `swift build -c release` (and `zsh scripts/build_app.sh` for the full suite).
@@ -42,3 +49,22 @@ python3 tests/long_run.py 10      # minutes
 
 Jumps around, plays, splits, changes clips and switches projects for N minutes, logging memory and command times every
 minute. It fails if memory keeps growing, commands error, or edits get slow. Use a copy: it edits the project (and undoes).
+
+## Documentation screenshots
+
+```bash
+zsh scripts/make_screenshots.sh        # all chapters, or e.g. 07 for one chapter
+```
+
+It starts its own Cutgenie on port 7879 with a throwaway media library and test clips made with ffmpeg, so your
+own app, projects and media are never touched. It needs Screen Recording permission for your terminal, an awake,
+unlocked screen, and Python with Pillow. Put your own `clip1.mp4`–`clip3.mp4` and `music.m4a` in a folder and set
+`CUTGENIE_SAMPLE_MEDIA` to that folder to use real footage.
+
+## Keeping the command list current
+
+After adding or changing a control command, rebuild the table in [Control commands](06-control-commands.mdx):
+
+```bash
+python3 scripts/make_control_doc.py
+```

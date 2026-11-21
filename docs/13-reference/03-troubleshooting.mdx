@@ -1,0 +1,42 @@
+---
+title: Troubleshooting
+description: What to do when something doesn't work.
+section: Reference
+order: 3
+---
+
+# Troubleshooting
+
+**Cutgenie won't open: "can't be opened" or "unidentified developer".**
+Use **Open Anyway** in System Settings, once. See [Open it for the first time](../01-getting-started/04-first-launch.mdx).
+
+**A clip shows "media missing".**
+The video file was moved or renamed. Use **Relink media…**. See [Relink missing media](../03-projects/08-relink-media.mdx).
+
+**Playback stutters.**
+Lower the playback resolution with the menu under the viewer (**Full**, **½** or **¼**). It only affects playback;
+exports are always full quality.
+
+**There's no sound.**
+- Check the **speaker** at the start of each sound track: clicking it mutes and unmutes the track.
+- Check the clip isn't switched off: select it and press **V** to switch it back on.
+- Check your Mac's volume and sound output.
+
+**Export says the file is already there.**
+Change the **Name** or choose another folder. See [If the file already exists](../10-exporting/05-overwrite.mdx).
+
+**Claude says it can't reach Cutgenie.**
+Make sure Cutgenie is open with a project, then ask again. If you changed the port with `CUTGENIE_PORT`, Claude must
+use the same one.
+
+**Cutgenie closed unexpectedly.**
+Open the project again: Cutgenie offers to restore your unsaved work. See
+[Autosave and crash recovery](../03-projects/07-autosave-recovery.mdx).
+
+**Still stuck?**
+Cutgenie writes problems to a log file. In Finder choose **Go ▸ Go to Folder…**, type `~/Library/Logs/Cutgenie`
+and press Return. Attach `cutgenie.log` when you report the problem on GitHub.
+
+## Next
+
+[What's new →](04-whats-new.mdx)

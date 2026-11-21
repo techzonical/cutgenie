@@ -12,7 +12,7 @@ Thanks for helping! A few simple rules keep the project easy to work on.
 ```bash
 zsh scripts/build_app.sh     # app + control tool
 python3 tests/smoke.py       # must pass
-python3 tests/check_all.py   # if you have test footage (see docs/TESTING.md)
+python3 tests/check_all.py   # if you have test footage (see docs/13-reference/08-testing.mdx)
 ```
 
 Please run the smoke test before every pull request, and the full suite when you change rendering, sound, export or
@@ -22,7 +22,7 @@ editing logic. If you fix a bug that only showed up on real footage, add a check
 
 - Swift, following the style already in the file you're editing. Short comments that explain *why*, written in plain
   language for people who aren't video engineers.
-- Every edit goes through `Editor.handle` (see docs/ARCHITECTURE.md), so it works the same from the mouse and from
+- Every edit goes through `Editor.handle` (see docs/13-reference/05-architecture.mdx), so it works the same from the mouse and from
   `cutgeniectl`. New features should get a control command too.
 - Never write to the user's media files; projects are saved atomically and old versions are kept.
 - No new dependencies without discussion; Cutgenie uses only Apple frameworks.

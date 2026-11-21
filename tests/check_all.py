@@ -17,7 +17,7 @@ import json, os, subprocess, sys, time, signal, shutil, tempfile, struct
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIN = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, ".build/release/Cutgenie")
 CTL = os.path.join(ROOT, "build/cutgeniectl")
-# a folder with your own test footage (read only), see docs/TESTING.md:
+# a folder with your own test footage (read only), see docs/13-reference/08-testing.mdx:
 #   IMG_1640.MOV (iPhone HEVC, turned), a-roll-audio.wav (separate voice, 44.1 kHz mono), "Final MyPCKey sponsor message video.mov" (48 kHz stereo)
 SRC = os.environ.get("CUTGENIE_FOOTAGE", "")
 BIG = os.environ.get("CUTGENIE_BIG_PROJECT", "")     # optional: a long real project for the speed check
@@ -109,7 +109,7 @@ def clip(id, asset, src_in, dur, off, **kw):
 
 def main():
     if not SRC or not os.path.exists(SRC):
-        raise SystemExit("set CUTGENIE_FOOTAGE to your test footage folder (see docs/TESTING.md); for a quick test without footage run tests/smoke.py")
+        raise SystemExit("set CUTGENIE_FOOTAGE to your test footage folder (see docs/13-reference/08-testing.mdx); for a quick test without footage run tests/smoke.py")
     # test projects: camera cuts with the voice file as sound, then the sponsor video, then camera again
     base = [clip("c1", "cam", 100, 3, 0, audioSource={"asset": "voice", "sourceIn": 102}),
             clip("c2", "cam", 140, 3, 3, audioSource={"asset": "voice", "sourceIn": 142}),

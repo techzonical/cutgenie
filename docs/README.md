@@ -114,8 +114,15 @@ You don't need to know anything about video editing to start. Every page does on
 7. [Example: sound and export](12-editing-with-claude/07-sound-and-export.mdx)
 8. [Tips for asking](12-editing-with-claude/08-tips.mdx)
 
-### Coming soon
-13. Reference
+### 13. Reference
+1. [Glossary](13-reference/01-glossary.mdx)
+2. [Frequently asked questions](13-reference/02-faq.mdx)
+3. [Troubleshooting](13-reference/03-troubleshooting.mdx)
+4. [What's new](13-reference/04-whats-new.mdx)
+5. [Architecture](13-reference/05-architecture.mdx)
+6. [Control commands](13-reference/06-control-commands.mdx)
+7. [Project file format](13-reference/07-project-format.mdx)
+8. [Testing](13-reference/08-testing.mdx)
 
 ---
 

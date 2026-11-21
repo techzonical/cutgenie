@@ -95,7 +95,7 @@ build/cutgeniectl export out=~/Desktop/test.mp4 codec=hevc mbps=12 from=0 to=30
 build/cutgeniectl quit save=true
 ```
 
-There are about 150 commands; see [docs/CONTROL.md](docs/CONTROL.md).
+There are about 150 commands; see [Control commands](docs/13-reference/06-control-commands.mdx).
 
 ## Tests
 
@@ -104,7 +104,7 @@ swift build -c release && python3 tests/smoke.py      # 30 seconds, no footage n
 ```
 
 The full suite (`tests/check_all.py`) and the long-session test (`tests/long_run.py`) run on your own footage; see
-[docs/TESTING.md](docs/TESTING.md).
+[Testing](docs/13-reference/08-testing.mdx).
 
 ## Project layout
 
@@ -117,7 +117,7 @@ tests/                   smoke test, full check suite, long-session test
 docs/                    architecture, control commands, project format, testing
 ```
 
-More in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+More in [Architecture](docs/13-reference/05-architecture.mdx).
 
 ## Who made it
 

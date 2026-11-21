@@ -34,7 +34,7 @@ def rss_mb(pid):
 
 
 if not PROJ or not os.path.exists(PROJ):
-    sys.exit("set CUTGENIE_LONG_PROJECT to a COPY of one of your projects (full media paths), see docs/TESTING.md")
+    sys.exit("set CUTGENIE_LONG_PROJECT to a COPY of one of your projects (full media paths), see docs/13-reference/08-testing.mdx")
 os.makedirs(os.path.dirname(OTHER), exist_ok=True)
 if not os.path.exists(OTHER):     # a small second project to switch to: the first 5 clips of the same one
     p0 = json.load(open(PROJ)); p0["clips"] = p0["clips"][:5]; p0["overlays"] = []; p0["upperClips"] = []; p0["audioClips"] = []

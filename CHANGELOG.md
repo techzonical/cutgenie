@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Documentation: 13 chapters for beginners in `docs/`, with screenshots made by `scripts/make_screenshots.sh`.
+- Claude Code skills (`skills/`) and plugin (`.claude-plugin/`) for editing by asking Claude.
+- New control command `set_zoom` (main-track zoom keyframes); testing aids `ui_size`, `ui_sections`, `ui_split`.
+- Fix: `seek` now moves the playhead as well as the picture.
+
 ## 0.1.0 (first public release)
 
 - Timeline editing: magnetic main track, multiple video / graphics / sound tracks, blade, trim, roll, slip, slide,
