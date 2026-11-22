@@ -16,6 +16,17 @@ Don't use Claude Code? The regular **Claude app for Mac** can edit in Cutgenie t
 4. Open Cutgenie and the project you want to edit.
 5. In a new chat, ask: *Can you see my Cutgenie?*
 
+> ⚠️ **Don't attach your video or audio to the chat.** Just open your project in Cutgenie and ask in words, like
+> *Add a title when I say my name.* The Cutgenie extension reads your files straight from your Mac.
+>
+> If you attach or upload a file, the Claude app copies it to Claude's online workspace, and Claude tries to work on
+> that copy, where there is no Cutgenie and no Whisper. You then see messages like *"no speech-to-text model"* or
+> *"package installs are blocked by your network settings"*. If that happens, start a new chat, attach nothing, and
+> ask again.
+>
+> This is true for the regular Claude app chat and for Claude Code: both work without attaching anything.
+> **Cowork** hasn't been tested yet and may have the same problem, because it also works in its own online workspace.
+
 The first time Claude uses a Cutgenie tool, the Claude app asks for your permission. You can allow it once or always.
 
 **What Claude can do with it**: everything in [The skills](05-skills.mdx): cut pauses, trim, add titles (placed by what you say), zoom, fix

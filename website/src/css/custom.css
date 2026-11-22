@@ -69,7 +69,7 @@ body { background: var(--cg-bg); }
 .theme-doc-markdown h2 { font-weight: 700; margin-top: 2.2rem; }
 .theme-doc-markdown h3 { font-family: 'DM Sans', sans-serif; font-weight: 700; }
 .theme-doc-markdown h1 + p { font-size: 1.1rem; color: #cfc6bd; }
-.theme-doc-markdown img { border-radius: 10px; border: 1px solid var(--cg-line); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.theme-doc-markdown img { display: block; margin: 1rem auto; height: auto; border-radius: 10px; border: 1px solid var(--cg-line); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
 .theme-doc-markdown table { display: table; width: 100%; font-size: 0.93rem; }
 .theme-doc-markdown th { background: var(--cg-panel2); }
 .theme-doc-markdown tr:nth-child(2n) { background: rgba(255,255,255,.02); }

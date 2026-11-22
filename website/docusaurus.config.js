@@ -12,6 +12,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   markdown: { hooks: { onBrokenMarkdownLinks: 'warn' } },
   i18n: { defaultLocale: 'en', locales: ['en'] },
+  clientModules: [require.resolve('./src/retinaImages.js')],
   stylesheets: [
     'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=JetBrains+Mono:wght@500&display=swap',
   ],
