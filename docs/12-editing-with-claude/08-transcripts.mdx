@@ -1,0 +1,105 @@
+---
+title: "Transcripts: Claude listens to your video"
+description: How Claude writes down what you say, which speech model to pick (base, small or large), and what to do when the words come out wrong.
+section: Editing with Claude
+order: 8
+---
+
+# Transcripts: Claude listens to your video
+
+A **transcript** is everything you say in a video, written down, with the time of every word. With a transcript, Claude
+can do things like *"add a lower third when I say my name"* without you finding any times yourself.
+
+Everything happens **on your Mac**. Your video is not uploaded, and it is never changed.
+
+## What you need (once)
+
+Two free things, both on your Mac:
+
+1. **Whisper**, the program that turns speech into text.
+2. **A speech model**, a file Whisper uses to recognise words. There are three sizes; see the next section.
+
+You don't have to set these up before you start. The first time you ask for something that needs a transcript, Claude
+tells you what's missing and **asks before installing or downloading anything**.
+
+**Installing Whisper**
+
+- **In Claude Code:** say yes when Claude asks, and it installs Whisper for you.
+- **In the Claude app:** the app can't install programs, so you do this one step yourself. Open **Terminal** (press
+  **⌘ Space**, type *Terminal*, press Return), type this and press Return:
+
+  ```bash
+  brew install whisper-cpp
+  ```
+
+  This needs [Homebrew](https://brew.sh). If Terminal says `brew: command not found`, install Homebrew first by
+  following the one line on that page.
+
+**Downloading a speech model:** Claude does this for you in both apps, after you pick a model and say yes.
+
+## Which speech model to pick
+
+Think of the models as small, medium and big brains. A bigger one understands more but is a bigger download.
+
+| Model | Download | Pick it if… |
+|---|---|---|
+| **base** | 150 MB | you speak **only English**, clearly. Fastest. |
+| **small** | 490 MB | you speak English with an accent or some background noise. |
+| **large** | 1.6 GB | you speak **Hindi, Hinglish (mixed Hindi and English), or any language other than English**, or the smaller ones made mistakes. The best. |
+
+**Not sure? Pick large.** It works for everything, and it is still quick: about 20 seconds for 5 minutes of talking on a
+recent Mac. The only cost is the bigger download, once.
+
+> **Speaking Hindi or Hinglish?** Pick **large**. The smaller models often give you an English translation instead of
+> your own words, write Hindi in the wrong script (for example Urdu), or repeat the same few words over and over.
+
+You can have more than one model. Claude always uses the biggest one you have. To get a different one later, ask:
+*Download the large speech model.*
+
+## How to ask
+
+1. Open your project in Cutgenie.
+2. Ask Claude in words. **Don't attach or upload your video to the chat** (see below). For example:
+   - *Write down what I say in my first clip.*
+   - *Transcribe my first clip in Hindi.*
+   - *Add a lower third when I say my name.* Claude makes the transcript first, then places it.
+
+Long videos are transcribed 5 minutes at a time, so a 20-minute video takes a few small steps. Claude does that by
+itself.
+
+**For Hinglish**, tell Claude how you want it written: Hindi in Devanagari (*आज हम review करेंगे*) or everything in
+English letters (*aaj hum review karenge*).
+
+## The first time, step by step
+
+This is what a first conversation looks like in the Claude app:
+
+1. You: *Add a lower third when I say my name.*
+2. Claude: Whisper isn't installed yet. Claude tells you the Terminal command above. Run it, then say *done*.
+3. Claude: no speech model yet. Claude shows you the three choices and asks which one.
+4. You: *Large, please.*
+5. Claude downloads it (a few minutes, once), writes the transcript, finds your name and adds the lower third.
+6. Claude tells you which words it used and when, so you can check by watching.
+
+Next time, steps 2 to 4 are skipped.
+
+## When the words come out wrong
+
+| What you see | What it means | What to do |
+|---|---|---|
+| Your Hindi came back in **English** | A small model translated it | Ask: *Download the large speech model and try again in Hindi.* |
+| Hindi in the **wrong script** (like Urdu) | A small model guessed wrong | Same: use **large**, and say *in Hindi*. |
+| The **same words repeated** over and over | The model got stuck | Use **large**. If it still happens, ask Claude to try a shorter part. |
+| Claude says *"no speech-to-text model"* or *"package installs are blocked"* | You attached the video, so Claude worked on a copy online instead of using Cutgenie | Start a new chat **without attaching anything** and ask again. |
+| Claude says Whisper isn't installed | Whisper isn't on this Mac yet | Run `brew install whisper-cpp` in Terminal (see above). |
+| Some English words come out a bit odd in Hindi text | Normal for mixed speech | Ask Claude to fix them, or edit the title text yourself. |
+
+## Where the files are, and freeing space
+
+The speech models are kept in your Library folder, in `Application Support/Cutgenie/whisper`. To free space, open
+**Finder**, choose **Go ▸ Go to Folder…**, paste `~/Library/Application Support/Cutgenie/whisper` and delete a model
+file you no longer want. Claude asks before downloading it again if it's ever needed.
+
+## Next
+
+[Example: place things by what you say →](09-say-it.mdx)

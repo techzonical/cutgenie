@@ -46,6 +46,13 @@ No Claude Code? The regular Claude app for Mac can do the same with the **Cutgen
 `zsh scripts/make_mcpb.sh` (it makes `build/Cutgenie.mcpb`) and double-click it. The connector lives in [`mcp/`](mcp).
 See [Editing with Claude](docs/12-editing-with-claude/01-how-it-works.mdx).
 
+### No timestamps needed
+
+Tell Claude *"add a lower third when I say my name"* or *"zoom in when I say the price"* and it does. Claude listens to
+your video with [Whisper](https://github.com/ggml-org/whisper.cpp), finds the words, and puts the title, zoom or cut
+right there. It all runs on your Mac: nothing is uploaded, and your recordings are never changed. See
+[Transcripts](docs/12-editing-with-claude/08-transcripts.mdx) and [Example: place things by what you say](docs/12-editing-with-claude/09-say-it.mdx).
+
 ## The best of Final Cut Pro and Premiere Pro
 
 Cutgenie takes the ideas that work best in the two big editors and puts them in one simple, free app:

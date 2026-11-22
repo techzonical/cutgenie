@@ -112,8 +112,10 @@ You don't need to know anything about video editing to start. Every page does on
 5. [The skills](12-editing-with-claude/05-skills.mdx)
 6. [Example: remove pauses](12-editing-with-claude/06-remove-pauses.mdx)
 7. [Example: titles and zooms](12-editing-with-claude/07-titles-and-zooms.mdx)
-8. [Example: sound and export](12-editing-with-claude/08-sound-and-export.mdx)
-9. [Tips for asking](12-editing-with-claude/09-tips.mdx)
+8. [Transcripts: Claude listens to your video](12-editing-with-claude/08-transcripts.mdx)
+9. [Example: place things by what you say](12-editing-with-claude/09-say-it.mdx)
+10. [Example: sound and export](12-editing-with-claude/10-sound-and-export.mdx)
+11. [Tips for asking](12-editing-with-claude/11-tips.mdx)
 
 ### 13. Reference
 1. [Glossary](13-reference/01-glossary.mdx)

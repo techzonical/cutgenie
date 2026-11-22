@@ -1,0 +1,39 @@
+---
+title: "Example: place things by what you say"
+description: Put titles, lower thirds and zooms where you say a word, without giving Claude any times.
+section: Editing with Claude
+order: 9
+---
+
+# Example: place things by what you say
+
+You don't need to find timestamps. Claude can listen to your video and put things where you say them.
+
+1. Open your project in Cutgenie.
+2. Ask Claude, for example:
+   - *Add a lower third with my name when I say my name.*
+   - *Zoom in a little when I say "price".*
+   - *Put a title "Battery life" up when I start talking about the battery.*
+   - *Cut out the part where I say "let me try that again".*
+
+Claude:
+
+- writes down everything you say in the clip, with the time of every word (this is called a **transcript**),
+- finds the words you asked about,
+- puts the title, lower third, zoom or cut there, starting a moment early so it doesn't feel late,
+- tells you which words it used and when (*"You say your name at 0:12, so the lower third runs 0:12 to 0:17"*).
+
+3. Press **Space** to watch. If something is in the wrong place, press **⌘Z**, or ask Claude to move it:
+   *Start the lower third half a second later.*
+
+## How it listens
+
+Claude first writes down what you say (a **transcript**), using **Whisper** on your Mac. Your video is never uploaded
+and never changed. The first time, Claude asks before installing Whisper and a speech model.
+
+**If you speak Hindi or Hinglish, pick the large speech model.** Everything about this, step by step, is on
+[Transcripts: Claude listens to your video](08-transcripts.mdx).
+
+## Next
+
+[Example: sound and export →](10-sound-and-export.mdx)

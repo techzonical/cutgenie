@@ -77,3 +77,11 @@ cg ripple_delete from=12.55 to=13.95
 ```
 
 Reply: "I removed 2 pauses (2.4 s). Press Space to watch; ⌘Z puts a cut back."
+
+## Example: cut by what you say
+
+Person: "Cut out the part where I say 'let me try that again'." Get the words with times from the clip's source file
+(`cutgenie_transcribe` in the Claude app, or `whisper-cli` as in the cutgenie-titles skill), find the phrase, convert to
+timeline time (`timeline = clip.offset + (source − clip.sourceIn)`) and remove the fluffed take with
+`cg ripple_delete from=<start of the bad take> to=<end of the phrase>`. Tell the person the words you removed and
+when, so they can check by watching.

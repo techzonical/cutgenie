@@ -71,3 +71,28 @@ cg render_frame time=6 out=/tmp/lower-third.png        # look at it before telli
 ```
 
 Reply: "Added a lower third from 0:05 to 0:10. Select it and use the Effects tab to change its look."
+
+## Example: place things by what you say
+
+Person: "Add a lower third when I say my name." No timestamp needed.
+
+1. Find the words and their times in the clip's **source file** with Whisper (read-only, runs on this Mac). In the
+   Claude app use the `cutgenie_transcribe` tool; in Claude Code:
+
+   ```bash
+   ffmpeg -v error -y -i "<file>" -vn -ac 1 -ar 16000 /tmp/cg-speech.wav
+   whisper-cli -m ~/Library/Application\ Support/Cutgenie/whisper/ggml-base.bin -f /tmp/cg-speech.wav -ojf -of /tmp/cg-speech -np
+   # /tmp/cg-speech.json: transcription[].tokens[] with text and offsets.from / .to in milliseconds
+   ```
+
+   If `whisper-cli` or a model is missing, ask before installing (`brew install whisper-cpp`). Models live in
+   `~/Library/Application Support/Cutgenie/whisper/`, from `https://huggingface.co/ggerganov/whisper.cpp/resolve/main/<file>`.
+   Explain the choice and let the person pick: `ggml-base.bin` (150 MB, clear English only), `ggml-small.bin`
+   (490 MB), `ggml-large-v3-turbo.bin` (1.6 GB, the best; **use it for Hindi, Hinglish or any non-English speech**,
+   where smaller models translate, use the wrong script or repeat junk). Use the largest one installed. Transcribe
+   long files about 5 minutes at a time.
+2. Find the word ("Sam" at 1.11 s in the file) and turn it into timeline time:
+   `timeline = clip.offset + (source − clip.sourceIn)`. Skip words outside the part of the file the clip uses.
+3. Start the graphic about 0.2 s early and run it for 4–5 s, then build the lower third as above at that time.
+4. Check with `cg render_frame` and tell the person which words you used: "Your name is at 0:12, so the lower third
+   runs 0:12–0:17."

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Tests the connector the way the Claude desktop app uses it, against a SEPARATE Cutgenie on port 7879.
 //   node mcp/test.js        (build first: swift build -c release; needs ffmpeg)
+// The transcribe test needs whisper-cli and its model; it is skipped (not failed) when they are missing.
 // Your own Cutgenie (port 7878), projects and media are never touched.
 "use strict";
 const { spawn, execFileSync } = require("child_process");
@@ -14,6 +15,8 @@ const ff = (...a) => execFileSync("ffmpeg", ["-v", "error", "-y", ...a]);
 ff("-f", "lavfi", "-i", "testsrc2=s=1920x1080:r=30:d=6", "-f", "lavfi", "-i", "sine=f=440:d=2,apad=pad_dur=2,volume=1", "-t", "6", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", path.join(W, "a.mp4"));
 const srv = spawn("node", [path.join(root, "mcp/server/index.js")], { env: { ...env } });
 let buf = "", waiting = {}, nid = 0;
+srv.stderr.on("data", (c) => process.stderr.write(c));
+srv.on("exit", (code) => { console.log(`FAIL the connector stopped (exit ${code}); see the error above`); app.kill(); process.exit(1); });
 srv.stdout.on("data", (c) => { buf += c; let i; while ((i = buf.indexOf("\n")) >= 0) { const m = JSON.parse(buf.slice(0, i)); buf = buf.slice(i + 1); waiting[m.id] && waiting[m.id](m); } });
 const rpc = (method, params) => new Promise((r) => { const id = ++nid; waiting[id] = r; srv.stdin.write(JSON.stringify({ jsonrpc: "2.0", id, method, params }) + "\n"); });
 const tool = async (name, args) => (await rpc("tools/call", { name, arguments: args })).result;
@@ -28,7 +31,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   check("initialize", init.result && init.result.serverInfo.name === "cutgenie" && /Safety rules/.test(init.result.instructions));
   srv.stdin.write(JSON.stringify({ jsonrpc: "2.0", method: "notifications/initialized" }) + "\n");
   const list = await rpc("tools/list", {});
-  check("tools/list has 9 tools", list.result.tools.length === 9, list.result.tools.length);
+  check("tools/list has 10 tools", list.result.tools.length === 10, list.result.tools.length);
   let r = await tool("cutgenie_status", {}); check("status", !r.isError, txt(r));
   const proj = path.join(W, "Test.cutgenie.json");
   r = await tool("cutgenie_command", { command: "new_project", args: { path: proj, width: 1920, height: 1080, fps: 30 } }); check("new_project", !r.isError, txt(r));
@@ -40,6 +43,25 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   r = await tool("cutgenie_get_project", {}); const p = JSON.parse(txt(r)); check("get_project summary", p.main_track.length === 2 && p.main_track[1].offset === 6, txt(r));
   r = await tool("cutgenie_find_silences", { path: path.join(W, "a.mp4") }); const s = JSON.parse(txt(r));
   check("find_silences finds the 2-4 s pause", s.pauses.length >= 1 && Math.abs(s.pauses[0].start - 2) < 0.2, txt(r));
+  const speech = path.join(W, "speech.mp4");
+  execFileSync("say", ["-o", path.join(W, "speech.aiff"), "Hi, my name is Sam. Today we test the new laptop."]);
+  ff("-f", "lavfi", "-i", "color=s=640x360:d=6", "-i", path.join(W, "speech.aiff"), "-shortest", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", speech);
+  const before = fs.statSync(speech).mtimeMs;
+  r = await tool("cutgenie_transcribe", { path: speech, language: "en" });
+  if (r.isError && /not installed|model is not/.test(txt(r))) console.log("skip transcribe  (" + txt(r).split(".")[0] + ")");
+  else {
+    const t = JSON.parse(txt(r)), sam = (t.words || []).find((w) => /^sam/i.test(w.word));
+    check("transcribe finds the word \"Sam\" with a time", sam && sam.start > 0.5 && sam.start < 2.5, txt(r).slice(0, 300));
+    check("transcribe leaves the file unchanged", fs.statSync(speech).mtimeMs === before);
+    await tool("cutgenie_command", { command: "add_clip", args: { path: speech } });
+    r = await tool("cutgenie_transcribe", { clip: "c3", language: "en" });
+    check("transcribe by clip id", !r.isError && /Sam/i.test(txt(r)), txt(r).slice(0, 300));
+  }
+  r = await tool("cutgenie_transcribe", { path: speech, model: "small" });
+  check("transcribe: asks before downloading a missing model", fs.existsSync(path.join(os.homedir(), "Library/Application Support/Cutgenie/whisper/ggml-small.bin")) || (r.isError && /Ask the person/.test(txt(r))), txt(r));
+  r = await tool("cutgenie_transcribe", { clip: "c9" }); check("transcribe by clip id: clear error for an unknown clip", r.isError && /No clip/.test(txt(r)), txt(r));
+  r = await tool("cutgenie_transcribe", { path: path.join(W, "missing.mp4") }); check("transcribe: clear error for a missing file", r.isError && /not found/.test(txt(r)), txt(r));
+  await tool("cutgenie_command", { command: "delete", args: { clip: "c3" } });
   r = await tool("cutgenie_command", { command: "ripple_delete", args: { from: 8.15, to: 9.85 } }); check("ripple_delete", !r.isError, txt(r));
   r = await tool("cutgenie_undo", {}); check("undo", !r.isError, txt(r));
   r = await tool("cutgenie_command", { command: "add_text", args: { text: "Hello", at: 1, dur: 3, size: 90 } }); check("add_text", !r.isError, txt(r));
@@ -57,5 +79,5 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   r = await tool("cutgenie_export", { out: path.join(W, "out.wav"), preset: "audio", from: 0, to: 2 }); check("export sound only", !r.isError, txt(r));
   check("original media unchanged", fs.statSync(path.join(W, "a.mp4")).size > 0);
   console.log(`\n${pass} of ${pass + fail} passed   (work folder ${W})`);
-  srv.kill(); app.kill(); process.exit(fail ? 1 : 0);
+  srv.removeAllListeners("exit"); srv.kill(); app.kill(); process.exit(fail ? 1 : 0);
 })();

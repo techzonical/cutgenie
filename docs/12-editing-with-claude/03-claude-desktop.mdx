@@ -18,7 +18,7 @@ Don't use Claude Code? The regular **Claude app for Mac** can edit in Cutgenie t
 
 The first time Claude uses a Cutgenie tool, the Claude app asks for your permission. You can allow it once or always.
 
-**What Claude can do with it**: everything in [The skills](05-skills.mdx): cut pauses, trim, add titles, zoom, fix
+**What Claude can do with it**: everything in [The skills](05-skills.mdx): cut pauses, trim, add titles (placed by what you say), zoom, fix
 sound and colour, blur, export, and check the edit. It can also show you a frame of the edited picture in the chat.
 
 **The same safety rules**, built into the extension itself:
@@ -28,7 +28,9 @@ sound and colour, blur, export, and check the edit. It can also show you a frame
 - it never replaces an existing export unless you say yes,
 - it can't close Cutgenie or delete your saved looks, titles or presets.
 
-**Removing pauses** uses **ffmpeg**. If it isn't installed, Claude tells you and asks first.
+**Removing pauses** uses **ffmpeg**, and **placing things by what you say** uses **Whisper** (free, runs on your Mac;
+see [Transcripts](08-transcripts.mdx)). If one isn't installed, Claude tells you and asks first. The Claude app can't install
+programs itself, so you type the install command in Terminal (`brew install ffmpeg` or `brew install whisper-cpp`).
 
 > While the Cutgenie code is private, the extension file is only available to people with access.
 

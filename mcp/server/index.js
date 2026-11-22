@@ -68,6 +68,7 @@ const GUIDE = `Cutgenie is a macOS video editor. Times are seconds on the timeli
 Common commands for cutgenie_command (args as an object):
 - Clips: add_clip {path}, split {at}, blade_all {at}, trim {clip, edge: start|end, to}, ripple_delete {clip} or {from, to}, delete {clip} (leaves a gap), move_items {ids, delta}, roll {at, delta}, slip {clip, delta}, set_speed {clip, speed}, to_lane {clip, lane: 1, at}.
 - Remove pauses: call cutgenie_find_silences on each V1 clip's file, convert source times to timeline times (timeline = offset + (source − sourceIn)), keep ~0.15 s on each side, and ripple_delete {from, to} from the END of the timeline backwards.
+- Place by what is said: cutgenie_transcribe {clip: "c1"} (runs on the Mac; never ask for the video to be attached or work on it in your own sandbox) gives every word with source times; convert to timeline times the same way and put the title, lower third or zoom there (start ~0.2 s early). Ask before downloading a model: base 150 MB is fine for clear English; offer large (1.6 GB) for Hindi, Hinglish or other languages. Long files: transcribe about 5 minutes at a time (from/to).
 - Titles: add_text {text, at, dur, size} → id; text_edit {id, text, font, size, bold, color: "r,g,b,a", stroke_width, stroke_color}; layer_set {ids, x, y, scale, fade_in, fade_out} (px from centre, y up); add_shape {kind: rect|circle|line|solid|gradient|blur, at, dur}; layer_fx {ids, type: shadow|glow|stroke|corners|blur|color|tint}. For a name above a job title use two text layers.
 - Zoom (V1): set_zoom {clip, keys: "t:scale[:ease],…"} (t from the clip's start, 1.1 = 10 % closer, ease linear|in|out|s; keys "" removes). Picture in picture (V2+): to_lane then pip {clip, x, y, scale}.
 - Blur: add_shape {kind: blur, at, dur} then layer_set {ids, x, y}; follow movement with layer_set {ids, at, x, y} at several times; check frames with cutgenie_render_frame.
@@ -95,6 +96,15 @@ const TOOLS = [
       path: { type: "string", description: "The clip's media file." },
       noise_db: { type: "number", description: "Quieter than this counts as silence (default -35)." },
       min_seconds: { type: "number", description: "Shortest pause to report (default 0.6)." } } } },
+  { name: "cutgenie_transcribe", description: "Write down what is said in a clip, with the time of every word, using Whisper on the person's Mac (read only; the file is never changed, nothing is uploaded). It reads files on the Mac directly: give a clip id from cutgenie_get_project (e.g. c1); never ask for the file to be attached, and never transcribe in your own sandbox. Use it to place titles, lower thirds, zooms or cuts by what the person says instead of asking for timestamps. Returns source-file times; convert them to timeline times.",
+    inputSchema: { type: "object", properties: {
+      clip: { type: "string", description: "A clip id from cutgenie_get_project, e.g. \"c1\". Transcribes only the part of the file that clip uses." },
+      path: { type: "string", description: "Or a media file on this Mac." },
+      language: { type: "string", description: "Spoken language code, e.g. \"en\" or \"hi\" (default: detect)." },
+      from: { type: "number", description: "Only transcribe from this source time (seconds)." },
+      to: { type: "number", description: "Only transcribe up to this source time (seconds)." },
+      model: { type: "string", enum: ["base", "small", "large"], description: "Speech model. Default: the largest one on this Mac. base 150 MB (fast, clear English only), small 490 MB, large 1.6 GB (best; use it for Hindi, Hinglish and other non-English speech)." },
+      download_model: { type: "boolean", description: "Download the chosen model if it is missing (once, from huggingface.co). Only true after the person chose a model and said yes to its size." } } } },
   { name: "cutgenie_export", description: "Export the project to a file. Refuses to replace an existing file unless replace_existing is true, which you may only set after the person said yes to replacing that exact file.",
     inputSchema: { type: "object", required: ["out"], properties: {
       out: { type: "string", description: "Output file, e.g. ~/Movies/My video.mp4 (.mp4, .mov, .wav, .m4a)." },
@@ -127,6 +137,113 @@ function findFfmpeg() {
     const f = path.join(d, "ffmpeg"); if (d && fs.existsSync(f)) return f;
   }
   return null;
+}
+
+function findBin(name) {
+  for (const d of [...(process.env.PATH || "").split(":"), "/opt/homebrew/bin", "/usr/local/bin", "/usr/bin"]) {
+    const f = path.join(d, name); if (d && fs.existsSync(f)) return f;
+  }
+  return null;
+}
+
+// Whisper speech models, kept in ~/Library/Application Support/Cutgenie/whisper/ (or CUTGENIE_WHISPER_MODEL for one file).
+const MODELS = {
+  base: { file: "ggml-base.bin", size: "150 MB", good: "fast; good for clear English, weak for Hindi and mixed Hindi-English" },
+  small: { file: "ggml-small.bin", size: "490 MB", good: "better English and other languages; still weak for Hinglish" },
+  large: { file: "ggml-large-v3-turbo.bin", size: "1.6 GB", good: "best: Hindi, Hinglish and most other languages, accents, music in the background; about 3 to 5 times slower than base" },
+};
+const MODEL_DIR = path.join(os.homedir(), "Library/Application Support/Cutgenie/whisper");
+const modelFile = (k) => path.join(MODEL_DIR, MODELS[k].file);
+const installedModels = () => Object.keys(MODELS).filter((k) => fs.existsSync(modelFile(k)));
+const CHOICES = Object.entries(MODELS).map(([k, m]) => `${k} (${m.size}: ${m.good})`).join("; ");
+
+function download(url, dest, hops = 0) {
+  const https = require("https");
+  return new Promise((resolve, reject) => https.get(url, { headers: { "User-Agent": "cutgenie" } }, (res) => {
+    if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && hops < 5) {
+      res.resume(); return resolve(download(new URL(res.headers.location, url).href, dest, hops + 1));
+    }
+    if (res.statusCode !== 200) { res.resume(); return reject(new Error("HTTP " + res.statusCode)); }
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    const part = dest + ".part", out = fs.createWriteStream(part);
+    res.pipe(out); out.on("finish", () => out.close(() => {
+      if (fs.statSync(part).size < 1e6) return reject(new Error("download too small"));
+      fs.renameSync(part, dest); resolve();
+    }));
+    out.on("error", reject); res.on("error", reject);
+  }).on("error", reject));
+}
+
+const run = (bin, args) => new Promise((resolve) => execFile(bin, args, { maxBuffer: 256 * 1024 * 1024 }, (err, o, e) => resolve({ err, out: String(o), errText: String(e) })));
+
+async function transcribe(a) {
+  const ff = findFfmpeg();
+  if (!ff) return fail("ffmpeg is not installed. Ask the person before installing it (for example with Homebrew: brew install ffmpeg).");
+  const wc = findBin("whisper-cli");
+  if (!wc) return fail("Whisper (whisper-cli) is not installed. Ask the person before installing it. It is free and runs on this Mac: in Terminal, brew install whisper-cpp. Then try again.");
+  if (a.clip) {
+    const r = await cutgenie("get_project");
+    if (!r.ok) return reply(r);
+    const p = r.project || r, all = [...(p.clips || []), ...(p.upperClips || []), ...(p.audioClips || [])];
+    const c = all.find((x) => x.id === a.clip); if (!c) return fail(`No clip "${a.clip}" in the open project.`);
+    const asset = (p.assets || []).find((x) => x.id === c.asset); if (!asset) return fail(`Clip "${a.clip}" has no media file.`);
+    a = { ...a, path: asset.path };
+    const si = c.sourceIn || 0, len = (c.duration || 0) * (c.speed || 1);
+    if (a.from === undefined) a.from = si;
+    if (a.to === undefined && len > 0) a.to = si + len;
+  }
+  if (!a.path) return fail("Give clip (an id from cutgenie_get_project) or path.");
+  const file = String(a.path || "").replace(/^~(?=\/|$)/, os.homedir());
+  if (!fs.existsSync(file)) return fail("File not found on this Mac: " + file);
+  let key = a.model && MODELS[a.model] ? a.model : null, model;
+  if (process.env.CUTGENIE_WHISPER_MODEL && !key) { model = process.env.CUTGENIE_WHISPER_MODEL; key = "custom"; }
+  else {
+    const have = installedModels();
+    if (!key) key = have[have.length - 1];
+    if (!key)
+      return fail(`No Whisper speech model is on this Mac yet (model is not downloaded). Before downloading, tell the person the choices in plain words and let them pick: ${CHOICES}. For Hindi, Hinglish or another language than English, recommend large. Each is downloaded once from huggingface.co. Then call cutgenie_transcribe again with model and download_model: true.`);
+    model = modelFile(key);
+    if (!fs.existsSync(model)) {
+      if (a.download_model !== true)
+        return fail(`The "${key}" speech model (${MODELS[key].size}) is not on this Mac yet (model is not downloaded). Ask the person whether to download it (once, from huggingface.co; it may take a few minutes). If they say yes, call cutgenie_transcribe again with model: "${key}" and download_model: true.`);
+      try { await download("https://huggingface.co/ggerganov/whisper.cpp/resolve/main/" + MODELS[key].file, model); }
+      catch (e) { return fail("Could not download the speech model: " + e.message); }
+    }
+  }
+  const from = Math.max(0, Number(a.from) || 0), to = a.to !== undefined ? Number(a.to) : null;
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "cutgenie-whisper-"));
+  try {
+    const wav = path.join(tmp, "audio.wav");
+    const cut = [...(from ? ["-ss", String(from)] : []), ...(to !== null ? ["-to", String(to)] : [])];
+    const x = await run(ff, ["-v", "error", "-nostdin", "-y", "-i", file, ...cut, "-vn", "-ac", "1", "-ar", "16000", "-c:a", "pcm_s16le", wav]);
+    if (x.err || !fs.existsSync(wav)) return fail("ffmpeg could not read the sound in the file.");
+    const lang = String(a.language || "auto").replace(/[^a-z-]/gi, "") || "auto";
+    const w = await run(wc, ["-m", model, "-f", wav, "-l", lang, "-ojf", "-of", path.join(tmp, "out"), "-np", "-t", String(Math.min(8, os.cpus().length))]);
+    let j; try { j = JSON.parse(fs.readFileSync(path.join(tmp, "out.json"), "utf8")); }
+    catch { return fail("Whisper could not transcribe the file. " + w.errText.split("\n").filter(Boolean).slice(-3).join(" ")); }
+    const r = (ms) => Math.round((from + ms / 1000) * 100) / 100;
+    const segments = [], words = [];
+    for (const s of j.transcription || []) {
+      const t = (s.text || "").trim(); if (!t) continue;
+      segments.push({ start: r(s.offsets.from), end: r(s.offsets.to), text: t });
+      for (const k of s.tokens || []) {
+        const kt = k.text || ""; if (!kt || /^\[_|^\[[A-Z_]+\]$|^<\|/.test(kt)) continue;
+        const last = words[words.length - 1];
+        if (!last || /^\s/.test(kt) || last.seg !== segments.length) words.push({ word: kt.trim(), start: r(k.offsets.from), end: r(k.offsets.to), seg: segments.length });
+        else { last.word += kt; last.end = r(k.offsets.to); }
+      }
+    }
+    const spoken = (j.result && j.result.language) || lang;
+    const out = words.filter((x) => x.word);
+    let tip;
+    if (key !== "large" && key !== "custom") {
+      const bad = out.length > 20 && new Set(out.map((x) => x.word.toLowerCase())).size < out.length / 6;
+      if (spoken !== "en" || bad) tip = `This used the "${key}" model, which often gets ${spoken === "en" ? "this speech" : "Hindi, Hinglish and other non-English speech"} wrong (repeated junk, or an English translation instead of the words as spoken). Tell the person, and offer the large model: ${MODELS.large.size}, downloaded once, much better for Hindi and mixed Hindi-English. With a yes, call again with model: "large" and download_model: true. For Hinglish captions, language "hi" writes Hindi in Devanagari.`;
+    }
+    return text(JSON.stringify({ file, model: key, language: spoken, ...(tip ? { tip } : {}),
+      words: out.map(({ seg, ...x }) => x), segments,
+      note: "Source-file times in seconds. timeline = clip offset + (source − sourceIn); skip words outside the clip's sourceIn … sourceIn + duration. Word times can be off by about 0.2 s, so start graphics a moment early." }));
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 }
 
 async function call(name, a = {}) {
@@ -165,6 +282,7 @@ async function call(name, a = {}) {
           resolve(text({ file, pauses, note: "Source-file times. timeline = clip offset + (source − sourceIn). Cut from the end backwards." }));
         }));
     }
+    case "cutgenie_transcribe": return await transcribe(a);
     case "cutgenie_export": {
       if (!a.out) return fail("Give out, the file to write.");
       const out = String(a.out).replace(/^~(?=\/|$)/, os.homedir());
