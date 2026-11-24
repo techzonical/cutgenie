@@ -52,8 +52,13 @@ module.exports = {
     docs: { sidebar: { hideable: true, autoCollapseCategories: true } },
     tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
     footer: {
-      style: 'dark',
-      copyright: 'Cutgenie · a free Mac video editor by TechZonical',
+      style: 'light',
+      logo: { alt: 'TechZonical', src: 'img/techzonical-logo-on-dark.svg', href: 'https://techzonical.com', target: '_self', height: 22 },
+      links: [
+        { label: 'Download Cutgenie', href: 'https://github.com/techzonical/cutgenie/releases/latest' },
+        { label: 'Source code on GitHub', href: 'https://github.com/techzonical/cutgenie' },
+      ],
+      copyright: `© ${new Date().getFullYear()} TechZonical · Cutgenie is a free, open-source Mac video editor (GPL-3.0)`,
     },
     navbar: {
       title: 'Cutgenie',
@@ -63,6 +68,7 @@ module.exports = {
         { to: '/editing-with-claude/how-it-works', label: '✦ Edit with Claude', position: 'left' },
         { to: '/shortcuts/keyboard-map', label: 'Shortcuts', position: 'left' },
         { type: 'search', position: 'right' },
+        { href: 'https://techzonical.com', label: 'TechZonical', position: 'right', target: '_self', className: 'tz-home-link', 'aria-label': 'Back to techzonical.com' },
       ],
     },
   },

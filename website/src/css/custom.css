@@ -197,3 +197,10 @@ kbd {
   .cg-bubble { font-size: .95rem; max-width: 200px; padding: 10px 14px; }
   .cg-chapters { padding: 8px 16px 48px; }
 }
+
+/* Link back to techzonical.com in the header */
+.tz-home-link { display: inline-flex; align-items: center; font-size: 0; opacity: 0.8; }
+.tz-home-link:hover { opacity: 1; }
+.tz-home-link::before { content: ''; width: 114px; height: 20px; background: url('/img/techzonical-logo-on-light.svg') center / contain no-repeat; }
+[data-theme='dark'] .tz-home-link::before { background-image: url('/img/techzonical-logo-on-dark.svg'); }
+.tz-home-link svg { display: none; }
